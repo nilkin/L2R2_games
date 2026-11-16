@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L2R2 Oyunlar</title>
+<meta name="description" content="Uşaqlar üçün pulsuz brauzer oyunları. Oyun ideyanızı göndərin, biz onu sizin üçün hazırlayaq!">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<script>
+  /* ===== CONFIG =====
+     FORM_ENDPOINT: Formspree kimi form servisinin ünvanı. Boş qalsa,
+     ideya GitHub Issue (hazır doldurulmuş) kimi açılır. */
+  const FORM_ENDPOINT = "";            // məs: "https://formspree.io/f/abcdwxyz"
+  const GITHUB_REPO   = "nilkin/L2R2_games";
+</script>
+<style>
+  :root{
+    --bg1:#fff6e0;--bg2:#ffe3ec;--ink:#3b2a4a;--muted:#6f5f7d;--card:#fff;
+    --line:#efe4f3;--pink:#ff4d8d;--purple:#a55eea;--yellow:#ffd32a;--green:#2ecc71;--blue:#4aa8ff;
+    --shadow:0 8px 0 rgba(0,0,0,.06),0 14px 30px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg1:#231a2e;--bg2:#2e1c2a;--ink:#f6eefb;--muted:#c4b4d2;--card:#352843;--line:#4a3a5a;
+      --shadow:0 8px 0 rgba(0,0,0,.25),0 14px 30px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg1:#231a2e;--bg2:#2e1c2a;--ink:#f6eefb;--muted:#c4b4d2;--card:#352843;--line:#4a3a5a;
+    --shadow:0 8px 0 rgba(0,0,0,.25),0 14px 30px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  html{background:var(--bg2)}
+  body{font-family:'Baloo 2',system-ui,sans-serif;color:var(--ink);min-height:100vh;
+       background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;overflow-x:hidden}
+  .wrap{max-width:980px;margin:0 auto;padding:16px 16px 48px}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .logo{font-weight:800;font-size:22px;display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
+  .logo b{background:var(--pink);color:#fff;border-radius:12px;padding:0 10px;transform:rotate(-4deg);display:inline-block}
+  .langs{display:flex;gap:4px;background:var(--card);border-radius:14px;padding:4px;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+  .langs button{border:0;background:none;font:inherit;font-weight:700;font-size:15px;color:var(--muted);padding:2px 10px;border-radius:10px;cursor:pointer}
+  .langs button.on{background:var(--purple);color:#fff}
+
+  .hero{text-align:center;padding:36px 0 20px}
+  .hero h1{font-size:clamp(32px,7vw,56px);line-height:1.05;margin:0 0 10px}
+  .hero h1 span{color:var(--pink)}
+  .hero p{font-size:clamp(17px,3.6vw,22px);color:var(--muted);margin:0 auto;max-width:620px}
+  .bubbles{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .bubbles span{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;
+                box-shadow:0 4px 0 rgba(0,0,0,.08);animation:bob 3s ease-in-out infinite}
+  .bubbles span:nth-child(2){animation-delay:.3s}.bubbles span:nth-child(3){animation-delay:.6s}
+  .bubbles span:nth-child(4){animation-delay:.9s}.bubbles span:nth-child(5){animation-delay:1.2s}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  @media (prefers-reduced-motion: reduce){.bubbles span{animation:none}}
+
+  h2{font-size:clamp(24px,5vw,32px);margin:28px 0 14px;text-align:center}
+  .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .game{background:var(--card);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
+        text-decoration:none;color:inherit;transition:transform .15s}
+  .game:hover{transform:translateY(-4px)}
+  .game:active{transform:scale(.98)}
+  .game .art{aspect-ratio:16/9;display:block;width:100%}
+  .game .body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .game h3{margin:0;font-size:26px;line-height:1.1}
+  .game p{margin:0;color:var(--muted);font-size:17px;line-height:1.35}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tags span{font-size:14px;font-weight:700;padding:1px 10px;border-radius:99px;background:var(--line)}
+  .play{margin-top:auto;align-self:flex-start;background:var(--green);color:#fff;font-weight:800;font-size:20px;
+        padding:6px 22px;border-radius:16px;box-shadow:0 4px 0 #1f9d55}
+  .game.soon{border:3px dashed var(--line);background:transparent;box-shadow:none;align-items:center;justify-content:center;
+             text-align:center;padding:28px;min-height:260px;cursor:pointer}
+  .game.soon .q{font-size:56px}
+
+  .idea{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:24px clamp(16px,4vw,36px);margin-top:12px;
+        display:grid;grid-template-columns:1fr 1.4fr;gap:28px;align-items:start}
+  @media (max-width:760px){.idea{grid-template-columns:1fr}}
+  .idea h2{text-align:left;margin:0 0 8px}
+  .idea .lead{color:var(--muted);font-size:18px;margin:0 0 14px}
+  .steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .steps li{display:flex;gap:10px;align-items:center;font-size:17px;font-weight:600}
+  .steps li i{font-style:normal;flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:20px}
+  form{display:flex;flex-direction:column;gap:12px}
+  label{font-weight:700;font-size:16px;display:flex;flex-direction:column;gap:4px}
+  label small{font-weight:500;color:var(--muted)}
+  textarea,input,select{font:inherit;font-size:17px;color:var(--ink);background:var(--bg1);border:2px solid var(--line);
+        border-radius:14px;padding:10px 12px;width:100%;outline:none}
+  textarea{min-height:130px;resize:vertical}
+  textarea:focus,input:focus,select:focus{border-color:var(--purple)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:480px){.row{grid-template-columns:1fr}}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chips button{font:inherit;font-size:14px;font-weight:700;border:2px solid var(--line);background:none;color:var(--muted);
+        border-radius:99px;padding:0 10px;cursor:pointer}
+  .chips button:hover{border-color:var(--purple);color:var(--purple)}
+  .send{border:0;font:inherit;font-weight:800;font-size:21px;color:#fff;background:var(--pink);border-radius:16px;
+        padding:10px;cursor:pointer;box-shadow:0 5px 0 #c9306a}
+  .send:active{transform:translateY(3px);box-shadow:0 2px 0 #c9306a}
+  .send:disabled{opacity:.6;cursor:wait}
+  .hp{position:absolute;left:-9999px}
+  .msg{border-radius:14px;padding:12px 14px;font-weight:700;display:none}
+  .msg.ok{display:block;background:#d9f7e6;color:#16663a}
+  .msg.err{display:block;background:#ffe0de;color:#a3241c}
+
+  footer{text-align:center;color:var(--muted);font-size:15px;margin-top:36px}
+  footer a{color:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="./"><b>L2R2</b> <span data-t="brand">Oyunlar</span></a>
+    <div class="langs" role="group" aria-label="Language">
+      <button data-lang="az" class="on">AZ</button><button data-lang="ru">RU</button><button data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 data-t="heroTitle">Uşaqlar üçün <span>şən oyunlar</span></h1>
+    <p data-t="heroSub">Yükləmək lazım deyil — telefonda, planşetdə, kompüterdə və TV-də brauzerdə oyna.</p>
+    <div class="bubbles" aria-hidden="true">
+      <span style="background:#ffd32a">🐸</span><span style="background:#ff9ff3">A</span>
+      <span style="background:#7bed9f">🐰</span><span style="background:#70a1ff">Ə</span><span style="background:#ffa502">🐧</span>
+    </div>
+  </section>
+
+  <h2 data-t="gamesTitle">🎮 Oyunlarımız</h2>
+  <div class="games">
+    <a class="game" href="alfa_be/">
+      <svg class="art" viewBox="0 0 320 180" aria-hidden="true">
+        <rect width="320" height="180" fill="#fff0c9"/>
+        <circle cx="270" cy="34" r="20" fill="#ffd32a"/>
+        <g font-family="Baloo 2,system-ui,sans-serif" font-weight="800" font-size="40" fill="#fff" text-anchor="middle">
+          <rect x="34" y="62" width="58" height="58" rx="14" fill="#ff6b81" transform="rotate(-8 63 91)"/><text x="63" y="105" transform="rotate(-8 63 91)">A</text>
+          <rect x="102" y="76" width="58" height="58" rx="14" fill="#a55eea" transform="rotate(5 131 105)"/><text x="131" y="119" transform="rotate(5 131 105)">Ə</text>
+          <rect x="170" y="58" width="58" height="58" rx="14" fill="#2ed573" transform="rotate(-4 199 87)"/><text x="199" y="101" transform="rotate(-4 199 87)">Ş</text>
+          <rect x="238" y="80" width="58" height="58" rx="14" fill="#1e90ff" transform="rotate(7 267 109)"/><text x="267" y="123" transform="rotate(7 267 109)">Ü</text>
+        </g>
+        <path d="M60 30c0-10 16-10 16 0v16" stroke="#ff4d8d" stroke-width="3" fill="none"/><ellipse cx="68" cy="22" rx="12" ry="15" fill="#ff4d8d"/>
+        <rect y="152" width="320" height="28" fill="#ffe3ec"/>
+      </svg>
+      <div class="body">
+        <h3 data-t="g1Title">Hərf Oyunu 🎈</h3>
+        <p data-t="g1Desc">Azərbaycan əlifbasını oynaya-oynaya öyrən: hərfləri tanı, səslərini eşit, ulduz topla.</p>
+        <div class="tags"><span data-t="g1Tag1">Əlifba</span><span data-t="g1Tag2">Səsli</span><span>4+</span></div>
+        <span class="play" data-t="play">▶ Oyna</span>
+      </div>
+    </a>
+
+    <a class="game" href="jumping-friends/">
+      <svg class="art" viewBox="0 0 320 180" aria-hidden="true">
+        <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ed1ff"/><stop offset="1" stop-color="#d9f1ff"/></linearGradient></defs>
+        <rect width="320" height="180" fill="url(#sky)"/>
+        <circle cx="262" cy="36" r="22" fill="#ffd32a"/>
+        <ellipse cx="70" cy="40" rx="30" ry="10" fill="#fff" opacity=".9"/><ellipse cx="180" cy="28" rx="24" ry="8" fill="#fff" opacity=".9"/>
+        <rect y="140" width="320" height="40" fill="#7bd36b"/><rect y="140" width="320" height="6" fill="#5bb84d"/>
+        <rect x="210" y="118" width="22" height="22" rx="4" fill="#b5651d"/>
+        <path d="M70 120 Q130 40 190 92" stroke="#fff" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
+        <g transform="translate(176 72)">
+          <ellipse cx="18" cy="22" rx="22" ry="17" fill="#2ed573"/>
+          <circle cx="7" cy="6" r="8" fill="#2ed573"/><circle cx="29" cy="6" r="8" fill="#2ed573"/>
+          <circle cx="7" cy="6" r="4" fill="#fff"/><circle cx="29" cy="6" r="4" fill="#fff"/>
+          <circle cx="8" cy="7" r="2" fill="#222"/><circle cx="30" cy="7" r="2" fill="#222"/>
+          <path d="M8 26 Q18 33 28 26" stroke="#1a7f43" stroke-width="2.5" fill="none"/>
+        </g>
+        <g transform="translate(40 108)">
+          <ellipse cx="14" cy="22" rx="14" ry="11" fill="#fff"/><ellipse cx="8" cy="2" rx="4" ry="12" fill="#fff"/><ellipse cx="20" cy="2" rx="4" ry="12" fill="#fff"/>
+          <circle cx="10" cy="18" r="2" fill="#222"/><circle cx="19" cy="18" r="2" fill="#222"/>
+        </g>
+        <g transform="translate(250 112)">
+          <ellipse cx="12" cy="16" rx="13" ry="16" fill="#2f3542"/><ellipse cx="12" cy="20" rx="8" ry="11" fill="#fff"/>
+          <path d="M9 10 l3 4 l3 -4z" fill="#ffa502"/>
+        </g>
+      </svg>
+      <div class="body">
+        <h3 data-t="g2Title">Atlayan Dostlar 🦗🐸🐰🐧</h3>
+        <p data-t="g2Desc">9 mərhələli macəra: fəsillərdən planetlərə qədər atla, final boss-ları məğlub et, Günəşdə Alov Əjdahası ilə döyüş!</p>
+        <div class="tags"><span data-t="g2Tag1">Macəra</span><span data-t="g2Tag2">3 dil</span><span>4–6</span></div>
+        <span class="play" data-t="play">▶ Oyna</span>
+      </div>
+    </a>
+
+    <a class="game soon" href="#idea">
+      <div class="q">💡</div>
+      <h3 data-t="soonTitle">Növbəti oyun sənin ideyan ola bilər!</h3>
+      <p data-t="soonDesc">Necə oyun istədiyini yaz — biz onu hazırlayaq.</p>
+    </a>
+  </div>
+
+  <section class="idea" id="idea">
+    <div>
+      <h2 data-t="ideaTitle">💡 Oyun ideyanı göndər</h2>
+      <p class="lead" data-t="ideaLead">Uşağınız hansı oyunu oynamaq istəyir? Bizə yazın — ən maraqlı ideyaları reallaşdırıb burada pulsuz yayımlayırıq.</p>
+      <ol class="steps">
+        <li><i style="background:#ffeaa7">✏️</i><span data-t="step1">İdeyanı qısa təsvir et</span></li>
+        <li><i style="background:#d6c6ff">🛠️</i><span data-t="step2">Biz oyunu hazırlayırıq</span></li>
+        <li><i style="background:#c7f5d9">🎉</i><span data-t="step3">Oyun bu səhifədə görünür</span></li>
+      </ol>
+    </div>
+    <form id="ideaForm" novalidate>
+      <label><span data-t="fIdea">Oyun ideyası *</span>
+        <textarea name="idea" id="idea-text" required maxlength="2000" data-tp="fIdeaPh" placeholder="Məs: Pişik ulduzları toplayır və hər ulduzda bir rəqəm öyrənir..."></textarea>
+      </label>
+      <div class="chips" aria-label="Ideas">
+        <button type="button" data-t="chip1">🔢 Rəqəmlər</button>
+        <button type="button" data-t="chip2">🎨 Rənglər</button>
+        <button type="button" data-t="chip3">🐾 Heyvanlar</button>
+        <button type="button" data-t="chip4">🚀 Kosmos</button>
+        <button type="button" data-t="chip5">🧩 Tapmaca</button>
+      </div>
+      <div class="row">
+        <label><span data-t="fAge">Uşağın yaşı</span>
+          <select name="age">
+            <option value="">—</option><option>2–3</option><option>4–6</option><option>7–9</option><option>10+</option>
+          </select>
+        </label>
+        <label><span data-t="fName">Adınız</span> <input name="name" maxlength="80" autocomplete="name"></label>
+      </div>
+      <label><span data-t="fContact">Əlaqə</span> <small data-t="fContactHint">E-poçt və ya telefon — oyun hazır olanda xəbər verək (istəyə bağlı)</small>
+        <input name="contact" maxlength="120" autocomplete="email">
+      </label>
+      <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="send" type="submit" data-t="send">Göndər 🚀</button>
+      <div class="msg" id="msg" role="status"></div>
+    </form>
+  </section>
+
+  <footer>
+    <p data-t="footer">Bütün oyunlar pulsuzdur və reklamsızdır.</p>
+    <p>© <span id="yr"></span> L2R2 · <a href="https://github.com/nilkin">GitHub</a></p>
+  </footer>
+</div>
+
+<script>
+const T = {
+  az:{brand:"Oyunlar",heroTitle:'Uşaqlar üçün <span>şən oyunlar</span>',heroSub:"Yükləmək lazım deyil — telefonda, planşetdə, kompüterdə və TV-də brauzerdə oyna.",
+    gamesTitle:"🎮 Oyunlarımız",play:"▶ Oyna",
+    g1Title:"Hərf Oyunu 🎈",g1Desc:"Azərbaycan əlifbasını oynaya-oynaya öyrən: hərfləri tanı, səslərini eşit, ulduz topla.",g1Tag1:"Əlifba",g1Tag2:"Səsli",
+    g2Title:"Atlayan Dostlar 🦗🐸🐰🐧",g2Desc:"9 mərhələli macəra: fəsillərdən planetlərə qədər atla, final boss-ları məğlub et, Günəşdə Alov Əjdahası ilə döyüş!",g2Tag1:"Macəra",g2Tag2:"3 dil",
+    soonTitle:"Növbəti oyun sənin ideyan ola bilər!",soonDesc:"Necə oyun istədiyini yaz — biz onu hazırlayaq.",
+    ideaTitle:"💡 Oyun ideyanı göndər",ideaLead:"Uşağınız hansı oyunu oynamaq istəyir? Bizə yazın — ən maraqlı ideyaları reallaşdırıb burada pulsuz yayımlayırıq.",
+    step1:"İdeyanı qısa təsvir et",step2:"Biz oyunu hazırlayırıq",step3:"Oyun bu səhifədə görünür",
+    fIdea:"Oyun ideyası *",fIdeaPh:"Məs: Pişik ulduzları toplayır və hər ulduzda bir rəqəm öyrənir...",
+    chip1:"🔢 Rəqəmlər",chip2:"🎨 Rənglər",chip3:"🐾 Heyvanlar",chip4:"🚀 Kosmos",chip5:"🧩 Tapmaca",
+    fAge:"Uşağın yaşı",fName:"Adınız",fContact:"Əlaqə",fContactHint:"E-poçt və ya telefon — oyun hazır olanda xəbər verək (istəyə bağlı)",
+    send:"Göndər 🚀",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
+    empty:"Zəhmət olmasa ideyanı yazın ✏️",gh:"İdeyanı tamamlamaq üçün GitHub səhifəsi açıldı.",footer:"Bütün oyunlar pulsuzdur və reklamsızdır."},
+  ru:{brand:"Игры",heroTitle:'Весёлые <span>игры для детей</span>',heroSub:"Ничего не нужно скачивать — играйте в браузере на телефоне, планшете, компьютере и ТВ.",
+    gamesTitle:"🎮 Наши игры",play:"▶ Играть",
+    g1Title:"Игра с буквами 🎈",g1Desc:"Учим азербайджанский алфавит играя: узнавай буквы, слушай их звуки, собирай звёзды.",g1Tag1:"Алфавит",g1Tag2:"Со звуком",
+    g2Title:"Прыгающие друзья 🦗🐸🐰🐧",g2Desc:"Приключение из 9 уровней: от времён года до планет, финальные боссы и битва с Огненным Драконом на Солнце!",g2Tag1:"Приключение",g2Tag2:"3 языка",
+    soonTitle:"Следующей игрой может стать твоя идея!",soonDesc:"Напиши, какую игру ты хочешь, — мы её сделаем.",
+    ideaTitle:"💡 Предложите идею игры",ideaLead:"В какую игру хочет поиграть ваш ребёнок? Напишите нам — самые интересные идеи мы воплотим и бесплатно опубликуем здесь.",
+    step1:"Кратко опишите идею",step2:"Мы делаем игру",step3:"Игра появляется на этой странице",
+    fIdea:"Идея игры *",fIdeaPh:"Напр.: котёнок собирает звёзды и с каждой звездой учит новую цифру...",
+    chip1:"🔢 Цифры",chip2:"🎨 Цвета",chip3:"🐾 Животные",chip4:"🚀 Космос",chip5:"🧩 Головоломка",
+    fAge:"Возраст ребёнка",fName:"Ваше имя",fContact:"Контакт",fContactHint:"E-mail или телефон — сообщим, когда игра будет готова (необязательно)",
+    send:"Отправить 🚀",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
+    empty:"Пожалуйста, опишите идею ✏️",gh:"Открыта страница GitHub, чтобы завершить отправку.",footer:"Все игры бесплатные и без рекламы."},
+  en:{brand:"Games",heroTitle:'Fun <span>games for kids</span>',heroSub:"Nothing to install — play in the browser on phone, tablet, computer or TV.",
+    gamesTitle:"🎮 Our games",play:"▶ Play",
+    g1Title:"Letter Game 🎈",g1Desc:"Learn the Azerbaijani alphabet through play: spot letters, hear their sounds, collect stars.",g1Tag1:"Alphabet",g1Tag2:"With audio",
+    g2Title:"Jumping Friends 🦗🐸🐰🐧",g2Desc:"A 9-level adventure from the seasons to the planets, with boss fights and a Fire Dragon battle on the Sun!",g2Tag1:"Adventure",g2Tag2:"3 languages",
+    soonTitle:"The next game could be your idea!",soonDesc:"Tell us what game you'd like — we'll build it.",
+    ideaTitle:"💡 Send us a game idea",ideaLead:"What game would your child love to play? Tell us — we build the best ideas and publish them here for free.",
+    step1:"Describe your idea briefly",step2:"We build the game",step3:"It appears on this page",
+    fIdea:"Game idea *",fIdeaPh:"E.g.: a kitten collects stars and learns a new number with each one...",
+    chip1:"🔢 Numbers",chip2:"🎨 Colors",chip3:"🐾 Animals",chip4:"🚀 Space",chip5:"🧩 Puzzle",
+    fAge:"Child's age",fName:"Your name",fContact:"Contact",fContactHint:"Email or phone — so we can tell you when it's ready (optional)",
+    send:"Send 🚀",sending:"Sending...",ok:"Thank you! We got your idea 🎉",err:"Couldn't send. Please try again a bit later.",
+    empty:"Please describe your idea ✏️",gh:"A GitHub page opened to finish sending your idea.",footer:"All games are free and ad-free."}
+};
+let lang = "az";
+try{ const s = localStorage.getItem("l2r2-lang"); if(T[s]) lang = s; }catch(e){}
+function applyLang(l){
+  lang = l; document.documentElement.lang = l;
+  document.querySelectorAll("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(v!=null) el.innerHTML=v; });
+  document.querySelectorAll("[data-tp]").forEach(el=>{ el.placeholder=T[l][el.dataset.tp]; });
+  document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===l));
+  try{ localStorage.setItem("l2r2-lang",l); }catch(e){}
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>applyLang(b.dataset.lang));
+applyLang(lang);
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+const ta = document.getElementById("idea-text");
+document.querySelectorAll(".chips button").forEach(b=>b.onclick=()=>{
+  const word = b.textContent.replace(/^\S+\s/,"");
+  ta.value = (ta.value ? ta.value.trim()+" " : "") + word + ": ";
+  ta.focus();
+});
+
+const form = document.getElementById("ideaForm"), msg = document.getElementById("msg");
+function show(cls,text){ msg.className="msg "+cls; msg.textContent=text; }
+form.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(form));
+  if(d._gotcha) return;
+  if(!d.idea.trim()){ show("err",T[lang].empty); ta.focus(); return; }
+  const btn = form.querySelector(".send");
+
+  if(!FORM_ENDPOINT){
+    const body = `**İdeya:**\n${d.idea}\n\n**Yaş:** ${d.age||"-"}\n**Ad:** ${d.name||"-"}\n**Əlaqə:** ${d.contact||"-"}\n**Dil:** ${lang}`;
+    const title = "💡 Oyun ideyası: " + d.idea.trim().slice(0,60);
+    window.open(`https://github.com/${GITHUB_REPO}/issues/new?labels=idea&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`,"_blank","noopener");
+    show("ok",T[lang].gh); return;
+  }
+
+  btn.disabled = true; btn.textContent = T[lang].sending;
+  try{
+    const r = await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({...d,lang,_subject:"Yeni oyun ideyası"})});
+    if(!r.ok) throw new Error(r.status);
+    form.reset(); show("ok",T[lang].ok);
+  }catch(err){ show("err",T[lang].err); }
+  finally{ btn.disabled=false; btn.textContent=T[lang].send; }
+});
+</script>
+</body>
+</html>
