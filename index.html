@@ -9,8 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <script>
   /* ===== CONFIG =====
-     FORM_ENDPOINT: Formspree kimi form servisinin ünvanı. Boş qalsa,
-     ideya GitHub Issue (hazır doldurulmuş) kimi açılır. */
+     İdeya hara göndərilsin (birinci doldurulan işləyir):
+     1) WHATSAPP_NUMBER: ölkə kodu ilə, yalnız rəqəmlər, "+" və boşluqsuz (məs: "994501234567").
+        "Göndər" basılanda WhatsApp ideya mətni hazır yazılmış halda açılır.
+     2) FORM_ENDPOINT: Formspree kimi form servisinin ünvanı.
+     3) Hər ikisi boşdursa, ideya GitHub Issue (hazır doldurulmuş) kimi açılır. */
+  const WHATSAPP_NUMBER = "994104144212";         // məs: "994501234567"
   const FORM_ENDPOINT = "";            // məs: "https://formspree.io/f/abcdwxyz"
   const GITHUB_REPO   = "nilkin/L2R2_games";
 </script>
@@ -74,7 +78,7 @@
              text-align:center;padding:28px;min-height:260px;cursor:pointer}
   .game.soon .q{font-size:56px}
 
-  .idea{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:24px clamp(16px,4vw,36px);margin-top:12px;
+  .idea{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:24px clamp(16px,4vw,36px);margin-top:32px;
         display:grid;grid-template-columns:1fr 1.4fr;gap:28px;align-items:start}
   @media (max-width:760px){.idea{grid-template-columns:1fr}}
   .idea h2{text-align:left;margin:0 0 8px}
@@ -99,6 +103,8 @@
         padding:10px;cursor:pointer;box-shadow:0 5px 0 #c9306a}
   .send:active{transform:translateY(3px);box-shadow:0 2px 0 #c9306a}
   .send:disabled{opacity:.6;cursor:wait}
+  .send.wa{background:#25d366;box-shadow:0 5px 0 #1a9e4b}
+  .send.wa:active{box-shadow:0 2px 0 #1a9e4b}
   .hp{position:absolute;left:-9999px}
   .msg{border-radius:14px;padding:12px 14px;font-weight:700;display:none}
   .msg.ok{display:block;background:#d9f7e6;color:#16663a}
@@ -139,7 +145,7 @@
           <rect x="238" y="80" width="58" height="58" rx="14" fill="#1e90ff" transform="rotate(7 267 109)"/><text x="267" y="123" transform="rotate(7 267 109)">Ü</text>
         </g>
         <path d="M60 30c0-10 16-10 16 0v16" stroke="#ff4d8d" stroke-width="3" fill="none"/><ellipse cx="68" cy="22" rx="12" ry="15" fill="#ff4d8d"/>
-        <rect y="152" width="320" height="28" fill="#ffe3ec"/>
+        <rect y="152" width="320" height="28" fill="#ffd98a"/>
       </svg>
       <div class="body">
         <h3 data-t="g1Title">Hərf Oyunu 🎈</h3>
@@ -245,7 +251,7 @@ const T = {
     fIdea:"Oyun ideyası *",fIdeaPh:"Məs: Pişik ulduzları toplayır və hər ulduzda bir rəqəm öyrənir...",
     chip1:"🔢 Rəqəmlər",chip2:"🎨 Rənglər",chip3:"🐾 Heyvanlar",chip4:"🚀 Kosmos",chip5:"🧩 Tapmaca",
     fAge:"Uşağın yaşı",fName:"Adınız",fContact:"Əlaqə",fContactHint:"E-poçt və ya telefon — oyun hazır olanda xəbər verək (istəyə bağlı)",
-    send:"Göndər 🚀",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
+    send:"Göndər 🚀",sendWa:"💬 WhatsApp-a göndər",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
     empty:"Zəhmət olmasa ideyanı yazın ✏️",gh:"İdeyanı tamamlamaq üçün GitHub səhifəsi açıldı.",footer:"Bütün oyunlar pulsuzdur və reklamsızdır."},
   ru:{brand:"Игры",heroTitle:'Весёлые <span>игры для детей</span>',heroSub:"Ничего не нужно скачивать — играйте в браузере на телефоне, планшете, компьютере и ТВ.",
     gamesTitle:"🎮 Наши игры",play:"▶ Играть",
@@ -257,7 +263,7 @@ const T = {
     fIdea:"Идея игры *",fIdeaPh:"Напр.: котёнок собирает звёзды и с каждой звездой учит новую цифру...",
     chip1:"🔢 Цифры",chip2:"🎨 Цвета",chip3:"🐾 Животные",chip4:"🚀 Космос",chip5:"🧩 Головоломка",
     fAge:"Возраст ребёнка",fName:"Ваше имя",fContact:"Контакт",fContactHint:"E-mail или телефон — сообщим, когда игра будет готова (необязательно)",
-    send:"Отправить 🚀",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
+    send:"Отправить 🚀",sendWa:"💬 Отправить в WhatsApp",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
     empty:"Пожалуйста, опишите идею ✏️",gh:"Открыта страница GitHub, чтобы завершить отправку.",footer:"Все игры бесплатные и без рекламы."},
   en:{brand:"Games",heroTitle:'Fun <span>games for kids</span>',heroSub:"Nothing to install — play in the browser on phone, tablet, computer or TV.",
     gamesTitle:"🎮 Our games",play:"▶ Play",
@@ -269,7 +275,7 @@ const T = {
     fIdea:"Game idea *",fIdeaPh:"E.g.: a kitten collects stars and learns a new number with each one...",
     chip1:"🔢 Numbers",chip2:"🎨 Colors",chip3:"🐾 Animals",chip4:"🚀 Space",chip5:"🧩 Puzzle",
     fAge:"Child's age",fName:"Your name",fContact:"Contact",fContactHint:"Email or phone — so we can tell you when it's ready (optional)",
-    send:"Send 🚀",sending:"Sending...",ok:"Thank you! We got your idea 🎉",err:"Couldn't send. Please try again a bit later.",
+    send:"Send 🚀",sendWa:"💬 Send via WhatsApp",sending:"Sending...",ok:"Thank you! We got your idea 🎉",err:"Couldn't send. Please try again a bit later.",
     empty:"Please describe your idea ✏️",gh:"A GitHub page opened to finish sending your idea.",footer:"All games are free and ad-free."}
 };
 let lang = "az";
@@ -278,6 +284,7 @@ function applyLang(l){
   lang = l; document.documentElement.lang = l;
   document.querySelectorAll("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(v!=null) el.innerHTML=v; });
   document.querySelectorAll("[data-tp]").forEach(el=>{ el.placeholder=T[l][el.dataset.tp]; });
+  if(WHATSAPP_NUMBER){ const s=document.querySelector(".send"); s.classList.add("wa"); s.innerHTML=T[l].sendWa; }
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===l));
   try{ localStorage.setItem("l2r2-lang",l); }catch(e){}
 }
@@ -300,6 +307,13 @@ form.addEventListener("submit", async e=>{
   if(d._gotcha) return;
   if(!d.idea.trim()){ show("err",T[lang].empty); ta.focus(); return; }
   const btn = form.querySelector(".send");
+
+  if(WHATSAPP_NUMBER){
+    const text = `💡 Yeni oyun ideyası\n\n${d.idea.trim()}\n\n👶 Yaş: ${d.age||"-"}\n🙂 Ad: ${d.name||"-"}\n📞 Əlaqə: ${d.contact||"-"}\n🌐 Dil: ${lang}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g,"")}?text=${encodeURIComponent(text)}`,"_blank","noopener");
+    show("ok",{az:"WhatsApp açıldı — mesajı göndərməyi unutmayın 📲",ru:"Открылся WhatsApp — не забудьте отправить сообщение 📲",en:"WhatsApp opened — don't forget to tap send 📲"}[lang]);
+    return;
+  }
 
   if(!FORM_ENDPOINT){
     const body = `**İdeya:**\n${d.idea}\n\n**Yaş:** ${d.age||"-"}\n**Ad:** ${d.name||"-"}\n**Əlaqə:** ${d.contact||"-"}\n**Dil:** ${lang}`;
