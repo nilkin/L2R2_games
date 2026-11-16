@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Hərf Oyunu — Azərbaycan əlifbası</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg1:#fff6e0;--bg2:#ffe3ec;--ink:#3b2a4a;--card:#fff;--ok:#2ecc71;--bad:#ff5e57}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+  input{user-select:text;-webkit-user-select:text}
+  html,body{margin:0}
+  html{background:var(--bg2)}
+  body{font-family:'Baloo 2',system-ui,sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden}
+  .screen{display:none;min-height:100vh;padding:16px 16px 72px;background:linear-gradient(160deg,var(--bg1),var(--bg2));flex-direction:column;align-items:center}
+  .screen.on{display:flex}
+  h1{font-size:clamp(28px,7vw,48px);margin:10px 0 4px;text-align:center;line-height:1.1}
+  h2{font-size:21px;margin:0 0 8px}
+  .sub{font-size:clamp(16px,4vw,22px);opacity:.75;margin:0 0 18px;text-align:center}
+  .pick{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  .kid-card{background:var(--card);border:none;border-radius:28px;padding:18px 18px 12px;width:min(42vw,220px);box-shadow:0 8px 0 rgba(0,0,0,.08),0 14px 30px rgba(0,0,0,.08);cursor:pointer;font:inherit;color:inherit;transition:transform .15s}
+  .kid-card:active{transform:scale(.95)}
+  .kid-card svg{width:100%;height:auto;display:block}
+  .kid-card .nm{font-size:26px;font-weight:800;margin-top:4px}
+  .kid-card.girl{outline:4px solid #ffb3d1}
+  .kid-card.boy{outline:4px solid #a8d4ff}
+  .letters-preview{display:flex;gap:6px;margin-top:22px;flex-wrap:wrap;justify-content:center;max-width:640px}
+  .letters-preview span{width:40px;height:40px;border-radius:12px;color:#fff;font-weight:800;font-size:24px;display:grid;place-items:center}
+  .parent-btn{margin-top:16px}
+
+  .top{width:100%;max-width:720px;display:flex;align-items:center;gap:12px}
+  .avatar{width:86px;flex:none;cursor:pointer}
+  .avatar svg{width:100%;height:auto;display:block}
+  .bubble{position:relative;background:#fff;border-radius:20px;padding:10px 14px;font-size:clamp(16px,4.2vw,22px);font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.06);flex:1;min-height:52px;display:flex;align-items:center}
+  .bubble:before{content:"";position:absolute;left:-10px;top:50%;margin-top:-10px;border:10px solid transparent;border-right-color:#fff;border-left:0}
+  .stars{flex:none;background:#fff;border-radius:18px;padding:6px 12px;font-weight:800;font-size:22px;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+  .tabs{display:flex;gap:8px;margin:14px 0 6px;flex-wrap:wrap;justify-content:center}
+  .tab{border:none;font:inherit;font-weight:800;font-size:18px;padding:8px 16px;border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+  .tab.on{background:var(--ink);color:#fff}
+  .stage{width:100%;max-width:720px;background:rgba(255,255,255,.7);border-radius:30px;padding:16px;margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+  .target{display:flex;align-items:center;gap:12px;min-height:90px}
+  .pic{font-size:clamp(64px,18vw,96px);line-height:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.08))}
+  .pic.bounce{animation:bounce .6s}
+  .say{border:none;background:#fff;border-radius:50%;width:52px;height:52px;font-size:26px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+  .slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;min-height:84px;padding:8px;border-radius:22px;transition:background .2s}
+  .slots.drop{background:rgba(84,160,255,.15)}
+  .slot{width:clamp(44px,12vw,72px);height:clamp(56px,15vw,84px);border-radius:16px;border:4px dashed #cbbcd9;background:#fff;display:grid;place-items:center;font-size:clamp(30px,8vw,50px);font-weight:800}
+  .slot .ghost{color:#e4dbee}
+  .slot.filled{border-style:solid;color:#fff}
+  .slot.pop{animation:pop .25s}
+  .slots.shake{animation:shake .45s}
+  .slots.win .slot{animation:jump .5s ease both}
+  .empty-msg{font-weight:700;font-size:18px;text-align:center;opacity:.8;max-width:420px}
+  .tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;width:100%;max-width:600px}
+  .tile{border:none;border-radius:20px;color:#fff;font:inherit;font-weight:800;font-size:clamp(34px,9vw,54px);padding:6px 0;cursor:grab;box-shadow:0 7px 0 rgba(0,0,0,.18);touch-action:none;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;transition:transform .1s}
+  .tiles.many{gap:7px}
+  .tiles.many .tile{font-size:clamp(22px,6vw,36px);border-radius:14px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+  .tile small{font-size:.42em;opacity:.85;font-weight:700;margin-top:2px}
+  .tile:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+  .drag-ghost{position:fixed;pointer-events:none;z-index:50;width:70px;height:78px;border-radius:18px;color:#fff;font-weight:800;font-size:44px;display:grid;place-items:center;box-shadow:0 10px 20px rgba(0,0,0,.2);transform:translate(-50%,-60%) rotate(-6deg)}
+  .ctrls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .btn{border:none;font:inherit;font-weight:800;font-size:20px;padding:10px 18px;border-radius:18px;cursor:pointer;background:#fff;color:var(--ink);box-shadow:0 5px 0 rgba(0,0,0,.1)}
+  .btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.1)}
+  .btn.go{background:var(--ok);color:#fff}
+  .btn.hint{background:#ffd32a}
+  .btn.sm{font-size:16px;padding:6px 12px;border-radius:14px}
+  .found{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:680px}
+  .found span{background:#fff;border-radius:12px;padding:2px 10px;font-weight:800;font-size:18px}
+  .back{position:fixed;bottom:12px;left:12px;font-size:16px;padding:8px 12px;border-radius:16px;border:none;background:#fff;border-radius:14px;padding:6px 10px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.08);z-index:5}
+  .progress{font-weight:700;opacity:.6}
+  canvas#fx{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:40}
+  .fs{position:fixed;right:12px;bottom:12px;z-index:30;border:none;background:#fff;border-radius:16px;padding:8px 12px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.1)}
+  .toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:16px;font-weight:700;font-size:16px;max-width:90vw;text-align:center;display:none}
+  .toast.on{display:block}
+
+  /* Name screen */
+  .name-av{width:min(46vw,200px);margin-top:6px}
+  .name-av svg{width:100%;height:auto;display:block}
+  .name-in{font:inherit;font-weight:800;font-size:clamp(26px,7vw,36px);text-align:center;padding:8px 14px;border-radius:20px;border:4px solid #e4dbee;width:min(90vw,360px);background:#fff;color:var(--ink);outline:none}
+  .name-in:focus{border-color:#a55eea}
+  .sugg{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:12px 0;max-width:480px}
+  .sugg button{border:none;background:#fff;border-radius:999px;padding:4px 14px;font:inherit;font-weight:700;font-size:18px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+  .name-ctrls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .btn.recording{background:var(--bad);color:#fff;animation:pulse 1s infinite}
+  .btn.big{font-size:26px;padding:12px 28px}
+  /* Parent settings */
+  .panel{width:100%;max-width:720px;background:rgba(255,255,255,.8);border-radius:24px;padding:14px;margin-top:12px;box-shadow:0 6px 20px rgba(0,0,0,.05)}
+  .presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .abc{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+  .abc button{border:none;border-radius:12px;font:inherit;font-weight:800;font-size:clamp(18px,5vw,26px);padding:4px 0;color:#fff;opacity:.28;cursor:pointer;line-height:1.2}
+  .abc button.on{opacity:1;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+  .info{font-weight:700;margin:10px 0 0;opacity:.8}
+  .note{font-size:15px;opacity:.8;margin:0 0 10px}
+  .row{display:flex;gap:6px;flex-wrap:wrap}
+  .row input{font:inherit;font-size:18px;padding:6px 10px;border-radius:12px;border:2px solid #e4dbee;min-width:0;flex:1}
+  .row input.pic-in{flex:0 0 90px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chips span{background:#fff;border-radius:12px;padding:2px 4px 2px 10px;font-weight:800;display:flex;align-items:center;gap:4px}
+  .chips button{border:none;background:#f3eef8;border-radius:8px;cursor:pointer;font:inherit}
+  .rlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px;max-height:360px;overflow:auto;margin-top:8px}
+  .rrow{display:flex;align-items:center;gap:6px;padding:4px 6px 4px 10px;background:#fff;border-radius:14px}
+  .rrow b{flex:1;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rrow button{border:none;background:#f3eef8;border-radius:10px;width:36px;height:36px;font-size:17px;cursor:pointer;flex:none}
+  .rrow button.recording{background:var(--bad);color:#fff;animation:pulse 1s infinite}
+  .rrow .pl,.rrow .dl{display:none}
+  .rrow.has .pl,.rrow.has .dl{display:inline-block}
+  .rrow.has{background:#e9fbf0}
+
+  .mouth-happy,.mouth-sad,.mouth-wow{display:none}
+  .mood-happy .mouth-happy,.mood-sad .mouth-sad,.mood-wow .mouth-wow{display:inline}
+  .mood-idle .mouth-happy{display:inline}
+  .avatar.jump{animation:jump .6s}
+  .avatar.sad{animation:shake .45s}
+  .eye{animation:blink 4s infinite;transform-origin:center;transform-box:fill-box}
+  @keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+  @keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-18px)}}
+  @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2) rotate(-6deg)}}
+  @keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<button class="fs" id="fsBtn">⛶ Tam ekran</button>
+<div class="toast" id="toast"></div>
+
+<!-- ===== Character selection ===== -->
+<section class="screen on" id="pickScreen">
+  <h1>Hərf Oyunu 🎈</h1>
+  <p class="sub">Kim oynayır? Seç!</p>
+  <div class="pick">
+    <button class="kid-card girl" data-kid="girl"><div class="svgwrap"></div><div class="nm" id="nm-girl">Qız 👧</div></button>
+    <button class="kid-card boy" data-kid="boy"><div class="svgwrap"></div><div class="nm" id="nm-boy">Oğlan 👦</div></button>
+  </div>
+  <div class="letters-preview" id="lp"></div>
+  <button class="btn sm parent-btn" id="openSet">⚙ Valideyn bölməsi — hərfləri seç</button>
+  <p class="sub" id="voiceNote" style="font-size:15px;margin-top:14px;max-width:480px"></p>
+</section>
+
+<!-- ===== Name ===== -->
+<section class="screen" id="nameScreen">
+  <div class="name-av mood-happy" id="nameAv"></div>
+  <h1>Dostunun adı nə olsun?</h1>
+  <p class="sub" style="margin-bottom:10px">Adı yaz və ya aşağıdan seç</p>
+  <input class="name-in" id="nameIn" maxlength="14" autocomplete="off" placeholder="Ad">
+  <div class="sugg" id="sugg"></div>
+  <div class="name-ctrls">
+    <button class="btn" id="nameRec">🎙 Adı səsinlə de</button>
+    <button class="btn go big" id="nameGo">▶ Başla</button>
+  </div>
+  <button class="btn sm" id="nameBack" style="margin-top:14px">↩ Geri</button>
+</section>
+
+<!-- ===== Parent settings ===== -->
+<section class="screen" id="setScreen">
+  <h1>⚙ Valideyn bölməsi</h1>
+  <div class="panel">
+    <h2>1. Hansı hərflər oyunda olsun?</h2>
+    <div class="presets">
+      <button class="tab" data-preset="start">A Ə L M T N</button>
+      <button class="tab" data-preset="vowels">Saitlər</button>
+      <button class="tab" data-preset="all">Hamısı</button>
+      <button class="tab" data-preset="none">Təmizlə</button>
+    </div>
+    <div class="abc" id="abc"></div>
+    <p class="info" id="selInfo"></p>
+  </div>
+  <div class="panel">
+    <h2>2. Öz sözünü əlavə et</h2>
+    <p class="note">Söz yalnız seçilmiş hərflərdən ibarətdirsə, oyunda çıxacaq.</p>
+    <div class="row">
+      <input id="cwWord" placeholder="Söz, məs. LALƏ" maxlength="9" autocomplete="off">
+      <input id="cwPic" class="pic-in" placeholder="🌷" maxlength="12" autocomplete="off">
+      <button class="btn sm go" id="cwAdd">+ Əlavə et</button>
+    </div>
+    <div class="chips" id="cwList"></div>
+  </div>
+  <div class="panel">
+    <h2>3. 🎙 Öz səsini yaz</h2>
+    <p class="note">Hərflər, hecalar və sözlər artıq Azərbaycan dilində səslənir. İstəsəniz, istənilən birini öz səsinizlə yazın — oyun sizin səsinizi işlədəcək (öz əlavə etdiyiniz sözlər üçün xüsusilə faydalıdır). 🎙 basın, deyin, ⏹ basın (3 saniyədən sonra özü dayanır).</p>
+    <div class="presets" id="recTabs">
+      <button class="tab on" data-rt="h">Hərflər</button>
+      <button class="tab" data-rt="s">Hecalar</button>
+      <button class="tab" data-rt="w">Sözlər</button>
+    </div>
+    <div class="rlist" id="recList"></div>
+  </div>
+  <button class="btn go" id="setDone" style="margin-top:16px">✔ Hazırdır</button>
+</section>
+
+<!-- ===== Game ===== -->
+<section class="screen" id="gameScreen">
+  <button class="back" id="backBtn">↩ Dost dəyiş</button>
+  <div class="top">
+    <div class="avatar mood-idle" id="avatar"></div>
+    <div class="bubble" id="bubble">Salam!</div>
+    <div class="stars">⭐ <span id="stars">0</span></div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-mode="heca">Hecalar</button>
+    <button class="tab" data-mode="soz">Sözlər</button>
+    <button class="tab" data-mode="free">Sərbəst</button>
+  </div>
+  <div class="stage">
+    <div class="progress" id="progress"></div>
+    <div class="target">
+      <div class="pic" id="pic">🔤</div>
+      <button class="say" id="sayBtn" title="Dinlə">🔊</button>
+    </div>
+    <div class="slots" id="slots"></div>
+    <div class="ctrls" id="ctrls">
+      <button class="btn" id="undoBtn">⌫ Sil</button>
+      <button class="btn hint" id="hintBtn">💡 İpucu</button>
+      <button class="btn go" id="checkBtn" style="display:none">✔ Yoxla</button>
+      <button class="btn" id="skipBtn">➜ Növbəti</button>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div class="found" id="found"></div>
+  </div>
+</section>
+
+<script id="audioPack">window.AUD_PACK={"A":"000.mp3","B":"001.mp3","C":"002.mp3","Ç":"003.mp3","D":"004.mp3","E":"005.mp3","Ə":"006.mp3","F":"007.mp3","G":"008.mp3","Ğ":"009.mp3","H":"010.mp3","X":"011.mp3","I":"012.mp3","İ":"013.mp3","J":"014.mp3","K":"015.mp3","Q":"016.mp3","L":"017.mp3","M":"018.mp3","N":"019.mp3","O":"020.mp3","Ö":"021.mp3","P":"022.mp3","R":"023.mp3","S":"024.mp3","Ş":"025.mp3","T":"026.mp3","U":"027.mp3","Ü":"028.mp3","V":"029.mp3","Y":"030.mp3","Z":"031.mp3","BA":"032.mp3","AB":"033.mp3","BE":"034.mp3","EB":"035.mp3","BƏ":"036.mp3","ƏB":"037.mp3","BI":"038.mp3","IB":"039.mp3","Bİ":"040.mp3","İB":"041.mp3","BO":"042.mp3","OB":"043.mp3","BÖ":"044.mp3","ÖB":"045.mp3","BU":"046.mp3","UB":"047.mp3","BÜ":"048.mp3","ÜB":"049.mp3","CA":"050.mp3","AC":"051.mp3","CE":"052.mp3","EC":"053.mp3","CƏ":"054.mp3","ƏC":"055.mp3","CI":"056.mp3","IC":"057.mp3","Cİ":"058.mp3","İC":"059.mp3","CO":"060.mp3","OC":"061.mp3","CÖ":"062.mp3","ÖC":"063.mp3","CU":"064.mp3","UC":"065.mp3","CÜ":"066.mp3","ÜC":"067.mp3","ÇA":"068.mp3","AÇ":"069.mp3","ÇE":"070.mp3","EÇ":"071.mp3","ÇƏ":"072.mp3","ƏÇ":"073.mp3","ÇI":"074.mp3","IÇ":"075.mp3","Çİ":"076.mp3","İÇ":"077.mp3","ÇO":"078.mp3","OÇ":"079.mp3","ÇÖ":"080.mp3","ÖÇ":"081.mp3","ÇU":"082.mp3","UÇ":"083.mp3","ÇÜ":"084.mp3","ÜÇ":"085.mp3","DA":"086.mp3","AD":"087.mp3","DE":"088.mp3","ED":"089.mp3","DƏ":"090.mp3","ƏD":"091.mp3","DI":"092.mp3","ID":"093.mp3","Dİ":"094.mp3","İD":"095.mp3","DO":"096.mp3","OD":"097.mp3","DÖ":"098.mp3","ÖD":"099.mp3","DU":"100.mp3","UD":"101.mp3","DÜ":"102.mp3","ÜD":"103.mp3","FA":"104.mp3","AF":"105.mp3","FE":"106.mp3","EF":"107.mp3","FƏ":"108.mp3","ƏF":"109.mp3","FI":"110.mp3","IF":"111.mp3","Fİ":"112.mp3","İF":"113.mp3","FO":"114.mp3","OF":"115.mp3","FÖ":"116.mp3","ÖF":"117.mp3","FU":"118.mp3","UF":"119.mp3","FÜ":"120.mp3","ÜF":"121.mp3","GA":"122.mp3","AG":"123.mp3","GE":"124.mp3","EG":"125.mp3","GƏ":"126.mp3","ƏG":"127.mp3","GI":"128.mp3","IG":"129.mp3","Gİ":"130.mp3","İG":"131.mp3","GO":"132.mp3","OG":"133.mp3","GÖ":"134.mp3","ÖG":"135.mp3","GU":"136.mp3","UG":"137.mp3","GÜ":"138.mp3","ÜG":"139.mp3","ĞA":"140.mp3","AĞ":"141.mp3","ĞE":"142.mp3","EĞ":"143.mp3","ĞƏ":"144.mp3","ƏĞ":"145.mp3","ĞI":"146.mp3","IĞ":"147.mp3","Ğİ":"148.mp3","İĞ":"149.mp3","ĞO":"150.mp3","OĞ":"151.mp3","ĞÖ":"152.mp3","ÖĞ":"153.mp3","ĞU":"154.mp3","UĞ":"155.mp3","ĞÜ":"156.mp3","ÜĞ":"157.mp3","HA":"158.mp3","AH":"159.mp3","HE":"160.mp3","EH":"161.mp3","HƏ":"162.mp3","ƏH":"163.mp3","HI":"164.mp3","IH":"165.mp3","Hİ":"166.mp3","İH":"167.mp3","HO":"168.mp3","OH":"169.mp3","HÖ":"170.mp3","ÖH":"171.mp3","HU":"172.mp3","UH":"173.mp3","HÜ":"174.mp3","ÜH":"175.mp3","XA":"176.mp3","AX":"177.mp3","XE":"178.mp3","EX":"179.mp3","XƏ":"180.mp3","ƏX":"181.mp3","XI":"182.mp3","IX":"183.mp3","Xİ":"184.mp3","İX":"185.mp3","XO":"186.mp3","OX":"187.mp3","XÖ":"188.mp3","ÖX":"189.mp3","XU":"190.mp3","UX":"191.mp3","XÜ":"192.mp3","ÜX":"193.mp3","JA":"194.mp3","AJ":"195.mp3","JE":"196.mp3","EJ":"197.mp3","JƏ":"198.mp3","ƏJ":"199.mp3","JI":"200.mp3","IJ":"201.mp3","Jİ":"202.mp3","İJ":"203.mp3","JO":"204.mp3","OJ":"205.mp3","JÖ":"206.mp3","ÖJ":"207.mp3","JU":"208.mp3","UJ":"209.mp3","JÜ":"210.mp3","ÜJ":"211.mp3","KA":"212.mp3","AK":"213.mp3","KE":"214.mp3","EK":"215.mp3","KƏ":"216.mp3","ƏK":"217.mp3","KI":"218.mp3","IK":"219.mp3","Kİ":"220.mp3","İK":"221.mp3","KO":"222.mp3","OK":"223.mp3","KÖ":"224.mp3","ÖK":"225.mp3","KU":"226.mp3","UK":"227.mp3","KÜ":"228.mp3","ÜK":"229.mp3","QA":"230.mp3","AQ":"231.mp3","QE":"232.mp3","EQ":"233.mp3","QƏ":"234.mp3","ƏQ":"235.mp3","QI":"236.mp3","IQ":"237.mp3","Qİ":"238.mp3","İQ":"239.mp3","QO":"240.mp3","OQ":"241.mp3","QÖ":"242.mp3","ÖQ":"243.mp3","QU":"244.mp3","UQ":"245.mp3","QÜ":"246.mp3","ÜQ":"247.mp3","LA":"248.mp3","AL":"249.mp3","LE":"250.mp3","EL":"251.mp3","LƏ":"252.mp3","ƏL":"253.mp3","LI":"254.mp3","IL":"255.mp3","Lİ":"256.mp3","İL":"257.mp3","LO":"258.mp3","OL":"259.mp3","LÖ":"260.mp3","ÖL":"261.mp3","LU":"262.mp3","UL":"263.mp3","LÜ":"264.mp3","ÜL":"265.mp3","MA":"266.mp3","AM":"267.mp3","ME":"268.mp3","EM":"269.mp3","MƏ":"270.mp3","ƏM":"271.mp3","MI":"272.mp3","IM":"273.mp3","Mİ":"274.mp3","İM":"275.mp3","MO":"276.mp3","OM":"277.mp3","MÖ":"278.mp3","ÖM":"279.mp3","MU":"280.mp3","UM":"281.mp3","MÜ":"282.mp3","ÜM":"283.mp3","NA":"284.mp3","AN":"285.mp3","NE":"286.mp3","EN":"287.mp3","NƏ":"288.mp3","ƏN":"289.mp3","NI":"290.mp3","IN":"291.mp3","Nİ":"292.mp3","İN":"293.mp3","NO":"294.mp3","ON":"295.mp3","NÖ":"296.mp3","ÖN":"297.mp3","NU":"298.mp3","UN":"299.mp3","NÜ":"300.mp3","ÜN":"301.mp3","PA":"302.mp3","AP":"303.mp3","PE":"304.mp3","EP":"305.mp3","PƏ":"306.mp3","ƏP":"307.mp3","PI":"308.mp3","IP":"309.mp3","Pİ":"310.mp3","İP":"311.mp3","PO":"312.mp3","OP":"313.mp3","PÖ":"314.mp3","ÖP":"315.mp3","PU":"316.mp3","UP":"317.mp3","PÜ":"318.mp3","ÜP":"319.mp3","RA":"320.mp3","AR":"321.mp3","RE":"322.mp3","ER":"323.mp3","RƏ":"324.mp3","ƏR":"325.mp3","RI":"326.mp3","IR":"327.mp3","Rİ":"328.mp3","İR":"329.mp3","RO":"330.mp3","OR":"331.mp3","RÖ":"332.mp3","ÖR":"333.mp3","RU":"334.mp3","UR":"335.mp3","RÜ":"336.mp3","ÜR":"337.mp3","SA":"338.mp3","AS":"339.mp3","SE":"340.mp3","ES":"341.mp3","SƏ":"342.mp3","ƏS":"343.mp3","SI":"344.mp3","IS":"345.mp3","Sİ":"346.mp3","İS":"347.mp3","SO":"348.mp3","OS":"349.mp3","SÖ":"350.mp3","ÖS":"351.mp3","SU":"352.mp3","US":"353.mp3","SÜ":"354.mp3","ÜS":"355.mp3","ŞA":"356.mp3","AŞ":"357.mp3","ŞE":"358.mp3","EŞ":"359.mp3","ŞƏ":"360.mp3","ƏŞ":"361.mp3","ŞI":"362.mp3","IŞ":"363.mp3","Şİ":"364.mp3","İŞ":"365.mp3","ŞO":"366.mp3","OŞ":"367.mp3","ŞÖ":"368.mp3","ÖŞ":"369.mp3","ŞU":"370.mp3","UŞ":"371.mp3","ŞÜ":"372.mp3","ÜŞ":"373.mp3","TA":"374.mp3","AT":"375.mp3","TE":"376.mp3","ET":"377.mp3","TƏ":"378.mp3","ƏT":"379.mp3","TI":"380.mp3","IT":"381.mp3","Tİ":"382.mp3","İT":"383.mp3","TO":"384.mp3","OT":"385.mp3","TÖ":"386.mp3","ÖT":"387.mp3","TU":"388.mp3","UT":"389.mp3","TÜ":"390.mp3","ÜT":"391.mp3","VA":"392.mp3","AV":"393.mp3","VE":"394.mp3","EV":"395.mp3","VƏ":"396.mp3","ƏV":"397.mp3","VI":"398.mp3","IV":"399.mp3","Vİ":"400.mp3","İV":"401.mp3","VO":"402.mp3","OV":"403.mp3","VÖ":"404.mp3","ÖV":"405.mp3","VU":"406.mp3","UV":"407.mp3","VÜ":"408.mp3","ÜV":"409.mp3","YA":"410.mp3","AY":"411.mp3","YE":"412.mp3","EY":"413.mp3","YƏ":"414.mp3","ƏY":"415.mp3","YI":"416.mp3","IY":"417.mp3","Yİ":"418.mp3","İY":"419.mp3","YO":"420.mp3","OY":"421.mp3","YÖ":"422.mp3","ÖY":"423.mp3","YU":"424.mp3","UY":"425.mp3","YÜ":"426.mp3","ÜY":"427.mp3","ZA":"428.mp3","AZ":"429.mp3","ZE":"430.mp3","EZ":"431.mp3","ZƏ":"432.mp3","ƏZ":"433.mp3","ZI":"434.mp3","IZ":"435.mp3","Zİ":"436.mp3","İZ":"437.mp3","ZO":"438.mp3","OZ":"439.mp3","ZÖ":"440.mp3","ÖZ":"441.mp3","ZU":"442.mp3","UZ":"443.mp3","ZÜ":"444.mp3","ÜZ":"445.mp3","ARI":"446.mp3","AYI":"447.mp3","GÜL":"448.mp3","GÖZ":"449.mp3","BAL":"450.mp3","ÇAY":"451.mp3","KÖK":"452.mp3","SÜD":"453.mp3","TOP":"454.mp3","DİŞ":"455.mp3","DİL":"456.mp3","FİL":"457.mp3","ŞİR":"458.mp3","QUŞ":"459.mp3","QAR":"460.mp3","DAĞ":"461.mp3","ŞAR":"462.mp3","TAC":"463.mp3","DUZ":"464.mp3","MAL":"465.mp3","ANA":"466.mp3","ATA":"467.mp3","NƏNƏ":"468.mp3","BABA":"469.mp3","BACI":"470.mp3","LAMA":"471.mp3","ALMA":"472.mp3","LALƏ":"473.mp3","NANƏ":"474.mp3","TORT":"475.mp3","SAAT":"476.mp3","AÇAR":"477.mp3","QAPI":"478.mp3","GƏMİ":"479.mp3","AYAQ":"480.mp3","ÜZÜM":"481.mp3","ÜZÜK":"482.mp3","İLAN":"483.mp3","TƏYYARƏ":"484.mp3","MANAT":"485.mp3","ARMUD":"486.mp3","BANAN":"487.mp3","LİMON":"488.mp3","GİLAS":"489.mp3","BALIQ":"490.mp3","TÜLKÜ":"491.mp3","İNƏK":"492.mp3","QOYUN":"493.mp3","KEÇİ":"494.mp3","TOYUQ":"495.mp3","DƏVƏ":"496.mp3","SİÇAN":"497.mp3","ÖRDƏK":"498.mp3","XORUZ":"499.mp3","MEYMUN":"500.mp3","DOVŞAN":"501.mp3","PİŞİK":"502.mp3","GÜNƏŞ":"503.mp3","ULDUZ":"504.mp3","BULUD":"505.mp3","YAĞIŞ":"506.mp3","AĞAC":"507.mp3","DƏNİZ":"508.mp3","YARPAQ":"509.mp3","BURUN":"510.mp3","QULAQ":"511.mp3","ÜRƏK":"512.mp3","KÖRPƏ":"513.mp3","AİLƏ":"514.mp3","QARDAŞ":"515.mp3","EVİM":"516.mp3","MAŞIN":"517.mp3","QATAR":"518.mp3","KİTAB":"519.mp3","QƏLƏM":"520.mp3","PAPAQ":"521.mp3","ÇƏTİR":"522.mp3","LAMPA":"523.mp3","ÇANTA":"524.mp3","STUL":"525.mp3","BAYRAQ":"526.mp3","ZƏNG":"527.mp3","NAĞARA":"528.mp3","QAŞIQ":"529.mp3","RAKET":"530.mp3","ROBOT":"531.mp3","MƏKTƏB":"532.mp3","TELEFON":"533.mp3","AVTOBUS":"534.mp3","ÇÖRƏK":"535.mp3","PENDİR":"536.mp3","YUMURTA":"537.mp3","KONFET":"538.mp3","POMİDOR":"539.mp3","XİYAR":"540.mp3","KARTOF":"541.mp3","SOĞAN":"542.mp3","QARPIZ":"543.mp3","ŞAFTALI":"544.mp3","ÇİYƏLƏK":"545.mp3","KƏPƏNƏK":"546.mp3","QURBAĞA":"547.mp3","TISBAĞA":"548.mp3","BAYQUŞ":"549.mp3","CANAVAR":"550.mp3","ZÜRAFƏ":"551.mp3","HƏDİYYƏ":"552.mp3","ANAM":"553.mp3","ATAM":"554.mp3","NƏNƏM":"555.mp3","BABAM":"556.mp3","MAMA":"557.mp3","TALA":"558.mp3","ƏLLƏ":"559.mp3","NAL":"560.mp3","ATLAR":"561.mp3","ALMALAR":"562.mp3","AFƏRİN!":"563.mp3","ƏLA!":"564.mp3","SUPER!":"565.mp3","ÇOX GÖZƏL!":"566.mp3","BRAVO!":"567.mp3","SƏN BACARIRSAN!":"568.mp3","MÖHTƏŞƏM!":"569.mp3","SALAM! MƏNİM ADIM":"570.mp3","GƏL OYNAYAQ!":"571.mp3","MƏNƏ AD QOY!":"572.mp3","AYLİN":"573.mp3","LEYLA":"574.mp3","NƏRMİN":"575.mp3","ZƏHRA":"576.mp3","AYAN":"577.mp3","FİDAN":"578.mp3","SƏBİNƏ":"579.mp3","AYXAN":"580.mp3","MURAD":"581.mp3","TURAL":"582.mp3","ELVİN":"583.mp3","KƏNAN":"584.mp3","RƏŞAD":"585.mp3","NİHAD":"586.mp3","ƏLİ":"587.mp3"};</script>
+<script>
+/* Xəta olsa, ekranda göstər */
+window.onerror=function(msg,src,line){
+  var n=document.getElementById('voiceNote');
+  if(n){n.style.color='#c0392b';n.textContent='⚠ Xəta: '+msg+' (sətir '+line+')';}
+};
+
+/* ---------- Əlifba ---------- */
+const ABC = 'A B C Ç D E Ə F G Ğ H X I İ J K Q L M N O Ö P R S Ş T U Ü V Y Z'.split(' ');
+const ABC_LOW = 'a b c ç d e ə f g ğ h x ı i j k q l m n o ö p r s ş t u ü v y z'.split(' ');
+const VOWELS = ['A','E','Ə','I','İ','O','Ö','U','Ü'];
+const LOW = {}; ABC.forEach((u,i)=>{LOW[u]=ABC_LOW[i]});
+const COLOR = {};
+ABC.forEach((u,i)=>{
+  const h=Math.round((i*137.508)%360);
+  const l=(h>40&&h<190)?40:55;
+  COLOR[u]='hsl('+h+',72%,'+l+'%)';
+});
+function azUp(s){return String(s).replace(/i/g,'İ').replace(/ı/g,'I').toUpperCase()}
+function azLow(s){return String(s).replace(/I/g,'ı').replace(/İ/g,'i').toLowerCase()}
+function chars(s){return Array.from(s)}
+function isVowel(u){return VOWELS.indexOf(u)>=0}
+/* Hərfin adı: sait özüdür, samit + ə (bə, cə, mə...) */
+function letterName(u){return isVowel(u)?LOW[u]:LOW[u]+'ə'}
+
+/* ---------- Söz bankı ---------- */
+const BANK_RAW = 'AT:🐴,ƏL:✋,ƏT:🥩,AY:🌙,SU:💧,OT:🌿,OD:🔥,İT:🐶,EV:🏠,ARI:🐝,AYI:🐻,GÜL:🌹,GÖZ:👁️,BAL:🍯,ÇAY:🍵,KÖK:🥕,SÜD:🥛,TOP:⚽,DİŞ:🦷,DİL:👅,FİL:🐘,ŞİR:🦁,QUŞ:🐦,QAR:❄️,DAĞ:⛰️,ŞAR:🎈,TAC:👑,DUZ:🧂,MAL:🐄,'+
+ 'ANA:👩,ATA:👨,NƏNƏ:👵,BABA:👴,BACI:👧,LAMA:🦙,ALMA:🍎,LALƏ:🌷,NANƏ:🌿,TORT:🎂,SAAT:⏰,AÇAR:🔑,QAPI:🚪,GƏMİ:🚢,AYAQ:🦶,ÜZÜM:🍇,ÜZÜK:💍,İLAN:🐍,TƏYYARƏ:✈️,'+
+ 'MANAT:💵,ARMUD:🍐,BANAN:🍌,LİMON:🍋,GİLAS:🍒,BALIQ:🐟,TÜLKÜ:🦊,İNƏK:🐄,QOYUN:🐑,KEÇİ:🐐,TOYUQ:🐔,DƏVƏ:🐫,SİÇAN:🐭,ÖRDƏK:🦆,XORUZ:🐓,MEYMUN:🐵,DOVŞAN:🐰,PİŞİK:🐱,'+
+ 'GÜNƏŞ:☀️,ULDUZ:⭐,BULUD:☁️,YAĞIŞ:🌧️,AĞAC:🌳,DƏNİZ:🌊,YARPAQ:🍃,BURUN:👃,QULAQ:👂,ÜRƏK:❤️,KÖRPƏ:👶,AİLƏ:👨‍👩‍👧,QARDAŞ:👦,EVİM:🏡,'+
+ 'MAŞIN:🚗,QATAR:🚆,KİTAB:📖,QƏLƏM:✏️,PAPAQ:🧢,ÇƏTİR:☂️,LAMPA:💡,ÇANTA:🎒,STUL:🪑,BAYRAQ:🇦🇿,ZƏNG:🔔,NAĞARA:🥁,QAŞIQ:🥄,RAKET:🚀,ROBOT:🤖,MƏKTƏB:🏫,TELEFON:📱,AVTOBUS:🚌,'+
+ 'ÇÖRƏK:🍞,PENDİR:🧀,YUMURTA:🥚,KONFET:🍬,POMİDOR:🍅,XİYAR:🥒,KARTOF:🥔,SOĞAN:🧅,QARPIZ:🍉,ŞAFTALI:🍑,ÇİYƏLƏK:🍓,KƏPƏNƏK:🦋,QURBAĞA:🐸,TISBAĞA:🐢,BAYQUŞ:🦉,CANAVAR:🐺,ZÜRAFƏ:🦒,HƏDİYYƏ:🎁';
+/* Sərbəst rejimdə əlavə tanınan sözlər */
+const EXTRA_RAW = 'ANAM:👩,ATAM:👨,NƏNƏM:👵,BABAM:👴,MAMA:👩,TALA:🌳,ƏLLƏ:✋,NAL:🐎,ATLAR:🐴,ALMALAR:🍎';
+function parseBank(s){
+  const out=[];
+  s.split(',').forEach(p=>{const i=p.indexOf(':');const w=p.slice(0,i).trim(),e=p.slice(i+1).trim();
+    if(w && chars(w).every(c=>ABC.indexOf(c)>=0)) out.push({w:w,p:e||'🔤'})});
+  return out;
+}
+const BANK = parseBank(BANK_RAW);
+const EXTRA = parseBank(EXTRA_RAW);
+
+const PRAISE = ['Afərin!','Əla!','Super!','Çox gözəl!','Bravo!','Sən bacarırsan!','Möhtəşəm!'];
+const TRY = ['Yenə yoxla!','Az qaldı!','Bir də cəhd et!','Fikirləş, tapacaqsan!'];
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}return a}
+
+/* ---------- Storage ---------- */
+const store = {
+  get(k,d){try{const v=localStorage.getItem('herf_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('herf_'+k,JSON.stringify(v))}catch(e){}}
+};
+const $=id=>document.getElementById(id);
+
+/* ---------- Characters (SVG) ---------- */
+function kidSVG(kind){
+  const skin='#ffd9b8', cheek='#ffaaa5';
+  const hair = kind==='girl' ? '#6b3e26' : '#3a2a1e';
+  const shirt = kind==='girl' ? '#ff6fb5' : '#54a0ff';
+  const hairBack = kind==='girl'
+    ? `<circle cx="38" cy="78" r="18" fill="${hair}"/><circle cx="162" cy="78" r="18" fill="${hair}"/>
+       <circle cx="30" cy="62" r="9" fill="#ff4d8d"/><circle cx="170" cy="62" r="9" fill="#ff4d8d"/>`
+    : '';
+  const hairTop = kind==='girl'
+    ? `<path d="M48 82 Q50 26 100 24 Q150 26 152 82 Q140 50 100 52 Q70 50 48 82Z" fill="${hair}"/>
+       <path d="M100 24 Q118 40 136 46" stroke="${hair}" stroke-width="10" fill="none"/>`
+    : `<path d="M50 80 Q46 30 100 26 Q156 28 150 80 Q146 56 128 50 L120 60 L110 48 L96 58 L86 46 L74 58 Q58 58 50 80Z" fill="${hair}"/>`;
+  return `<svg viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg">
+    ${hairBack}
+    <path d="M40 210 Q42 160 100 156 Q158 160 160 210Z" fill="${shirt}"/>
+    <rect x="88" y="138" width="24" height="22" rx="8" fill="${skin}"/>
+    <circle cx="100" cy="88" r="56" fill="${skin}"/>
+    <circle cx="44" cy="92" r="10" fill="${skin}"/><circle cx="156" cy="92" r="10" fill="${skin}"/>
+    ${hairTop}
+    <ellipse class="eye" cx="78" cy="92" rx="7" ry="9" fill="#2d1e2f"/>
+    <ellipse class="eye" cx="122" cy="92" rx="7" ry="9" fill="#2d1e2f"/>
+    <circle cx="80" cy="89" r="2.5" fill="#fff"/><circle cx="124" cy="89" r="2.5" fill="#fff"/>
+    <circle cx="66" cy="112" r="9" fill="${cheek}" opacity=".6"/><circle cx="134" cy="112" r="9" fill="${cheek}" opacity=".6"/>
+    <path class="mouth-happy" d="M80 114 Q100 138 120 114 Q100 124 80 114Z" fill="#c0392b"/>
+    <path class="mouth-sad" d="M84 126 Q100 112 116 126" stroke="#2d1e2f" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse class="mouth-wow" cx="100" cy="120" rx="10" ry="12" fill="#c0392b"/>
+    ${kind==='girl' ? '<path d="M70 72 Q78 68 86 72 M114 72 Q122 68 130 72" stroke="#2d1e2f" stroke-width="3" fill="none" stroke-linecap="round"/>' : '<path d="M68 74 L88 72 M112 72 L132 74" stroke="#2d1e2f" stroke-width="4" fill="none" stroke-linecap="round"/>'}
+  </svg>`;
+}
+document.querySelectorAll('.kid-card').forEach(b=>{
+  b.querySelector('.svgwrap').innerHTML = `<div class="mood-idle">${kidSVG(b.dataset.kid)}</div>`;
+});
+
+/* ---------- Toast ---------- */
+let toastT=null;
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),5000)}
+
+/* ---------- Effects ---------- */
+let actx=null;
+function tone(freq,dur=.12,type='sine',delay=0,vol=.15){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.type=type;o.frequency.value=freq;
+    const t=actx.currentTime+delay;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+dur+.02);
+  }catch(e){}
+}
+const sfx = {
+  tap(i){tone(440+(i%12)*45,.1,'triangle')},
+  win(){[523,659,784,1047].forEach((f,i)=>tone(f,.18,'triangle',i*.1))},
+  bad(){tone(220,.18,'sawtooth',0,.08);tone(180,.22,'sawtooth',.15,.08)},
+};
+
+/* ---------- Recorded voices (IndexedDB) ---------- */
+const REC = {};
+let db=null;
+function idbOpen(){return new Promise(res=>{
+  try{const r=indexedDB.open('herf_oyunu',1);
+    r.onupgradeneeded=()=>r.result.createObjectStore('rec');
+    r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>res();
+  }catch(e){res()}
+})}
+function idbLoad(){return new Promise(res=>{
+  if(!db) return res();
+  try{const c=db.transaction('rec').objectStore('rec').openCursor();
+    c.onsuccess=()=>{const cur=c.result;if(cur){REC[cur.key]=cur.value;cur.continue()}else res()};
+    c.onerror=()=>res();
+  }catch(e){res()}
+})}
+function idbPut(k,v){try{if(db)db.transaction('rec','readwrite').objectStore('rec').put(v,k)}catch(e){}}
+function idbDel(k){try{if(db)db.transaction('rec','readwrite').objectStore('rec').delete(k)}catch(e){}}
+
+/* ---------- Speech ---------- */
+let voices=[];
+function loadVoices(){try{voices=speechSynthesis.getVoices()}catch(e){}}
+try{loadVoices();speechSynthesis.onvoiceschanged=loadVoices}catch(e){}
+function pickVoice(){
+  const az=voices.filter(v=>/^az/i.test(v.lang));
+  if(az.length){
+    const want = S.kid==='boy' ? /bab/i : /banu/i;
+    return az.find(v=>want.test(v.name)) || az[0];
+  }
+  return voices.find(v=>/^tr/i.test(v.lang)) || null;
+}
+function hasAzVoice(){return voices.some(v=>/^az/i.test(v.lang))}
+/* Hazır Azərbaycan səsləri (oyunun içində) */
+const AUD = window.AUD_PACK || {};
+/* iPhone üçün: bir audio elementi — ilk toxunuşdan sonra açıq qalır */
+const player = new Audio();
+let playing=false;
+function stopSpeech(){
+  try{speechSynthesis.cancel()}catch(e){}
+  try{player.pause()}catch(e){} playing=false;
+}
+function tts(text,done){
+  try{
+    const v=pickVoice();
+    let t=azLow(text);
+    /* Azərbaycan səsi yoxdursa, türk səsinə uyğunlaşdırırıq */
+    if(!v || !/^az/i.test(v.lang)) t=t.replace(/ə/g,'e').replace(/q/g,'g').replace(/x/g,'h');
+    const u=new SpeechSynthesisUtterance(t);
+    if(v){u.voice=v;u.lang=v.lang}else u.lang='az-AZ';
+    u.rate=.8;u.pitch=S.kid==='boy'?1.1:1.25;
+    let fired=false;const fin=()=>{if(!fired){fired=true;if(done)done()}};
+    u.onend=fin;u.onerror=fin;
+    speechSynthesis.speak(u);
+  }catch(e){if(done)done()}
+}
+function playSrc(src,done){
+  try{
+    let fired=false;const fin=()=>{if(!fired){fired=true;playing=false;if(done)done()}};
+    player.onended=fin;player.onerror=fin;
+    player.src=src;playing=true;
+    const p=player.play();if(p&&p.catch)p.catch(fin);
+  }catch(e){if(done)done()}
+}
+/* speak("ALMA") və ya speak([{k:'Ə',t:'ə'}, 'Afərin!']) — yazılmış səs varsa onu çalır */
+function speak(list){
+  stopSpeech();
+  list=[].concat(list);let i=0;
+  const next=()=>{
+    if(i>=list.length) return;
+    const it=list[i++];
+    const k=typeof it==='string'?azUp(it).trim():it.k;
+    const t=typeof it==='string'?it:it.t;
+    if(REC[k]) playSrc(REC[k],next);
+    else if(AUD[k]) playSrc('audio/'+(S.kid==='boy'?'boy':'girl')+'/'+AUD[k],next);
+    else tts(t,next);
+  };
+  next();
+}
+function sayLetter(u){speak({k:u,t:letterName(u)})}
+
+/* ---------- Confetti ---------- */
+const cv=$('fx'), cx=cv.getContext('2d');
+let parts=[];
+function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+addEventListener('resize',resize);resize();
+function confetti(){
+  const cols=['#ff6b6b','#ff9f43','#1dd1a1','#54a0ff','#a55eea','#ff6fb5','#ffd32a'];
+  for(let i=0;i<110;i++) parts.push({x:innerWidth/2,y:innerHeight*.45,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,
+    s:6+Math.random()*7,c:rnd(cols),r:Math.random()*6,vr:(Math.random()-.5)*.4,life:120});
+  if(parts.length<=110) requestAnimationFrame(loop);
+}
+function loop(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/3,p.s,p.s*.66);cx.restore();});
+  parts=parts.filter(p=>p.life>0&&p.y<innerHeight+40);
+  if(parts.length) requestAnimationFrame(loop); else cx.clearRect(0,0,innerWidth,innerHeight);
+}
+
+/* ---------- State ---------- */
+const S = {
+  kid: store.get('kid',null),
+  stars: store.get('stars',0),
+  sel: store.get('letters',['A','Ə','L','M','T','N']).filter(u=>ABC.indexOf(u)>=0),
+  custom: store.get('custom',[]),
+  mode:'heca',
+  deck:{heca:[],soz:[]},
+  pos:{heca:0,soz:0},
+  built:[],hint:false,lock:false,
+  found:new Set(store.get('found',[])),
+};
+const avatar=$('avatar'), bubble=$('bubble');
+const NAME_SUGG={girl:['Aylin','Leyla','Nərmin','Zəhra','Ayan','Lalə','Fidan','Səbinə'],boy:['Ayxan','Murad','Tural','Elvin','Kənan','Rəşad','Nihad','Əli']};
+function kidName(kind){kind=kind||S.kid;return store.get('name_'+kind,'')||(kind==='girl'?'Aylin':'Ayxan')}
+function niceName(v){v=String(v).replace(/\s+/g,' ').trim();if(!v)return '';const a=chars(v);return azUp(a[0])+azLow(a.slice(1).join(''))}
+function renderCardNames(){
+  ['girl','boy'].forEach(k=>{const n=store.get('name_'+k,'');$('nm-'+k).textContent=(n||(k==='girl'?'Qız':'Oğlan'))+(k==='girl'?' 👧':' 👦')});
+}
+let nameKind=null;
+function openName(kind){
+  nameKind=kind;S.kid=kind;
+  $('nameAv').innerHTML=kidSVG(kind);
+  $('nameIn').value=store.get('name_'+kind,'');
+  $('sugg').innerHTML=NAME_SUGG[kind].map(n=>`<button>${n}</button>`).join('');
+  show('nameScreen');
+  speak(kind==='girl'?'Mənə ad qoy!':'Mənə ad qoy!');
+}
+$('sugg').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('nameIn').value=b.textContent;tone(700,.08,'triangle');speak(b.textContent)};
+$('nameRec').onclick=()=>{
+  const n=niceName($('nameIn').value);
+  if(!n){toast('Əvvəlcə adı yazın.');$('nameIn').focus();return}
+  toggleRec(azUp(n),$('nameRec'),'🎙 Adı səsinlə de');
+};
+$('nameIn').onkeydown=e=>{if(e.key==='Enter')$('nameGo').click()};
+$('nameGo').onclick=()=>{
+  releaseMic();
+  const n=niceName($('nameIn').value)||kidName(nameKind);
+  store.set('name_'+nameKind,n);renderCardNames();
+  startGame(nameKind);
+};
+$('nameBack').onclick=()=>{releaseMic();stopSpeech();show('pickScreen')};
+function setMood(m){avatar.className='avatar mood-'+m}
+function talk(t){bubble.textContent=t}
+
+/* Seçilmiş hərflər */
+function selOrdered(){return ABC.filter(u=>S.sel.indexOf(u)>=0)}
+function allWords(){return BANK.concat(S.custom)}
+function wordOk(w){return chars(w).every(c=>S.sel.indexOf(c)>=0)}
+function availWords(){
+  const seen={};
+  return allWords().filter(x=>{if(seen[x.w]||!wordOk(x.w))return false;seen[x.w]=1;return true});
+}
+function allSyllables(){
+  const sel=selOrdered(), V=sel.filter(isVowel), C=sel.filter(u=>!isVowel(u)), out=[];
+  C.forEach(c=>V.forEach(v=>out.push(c+v)));
+  V.forEach(v=>C.forEach(c=>out.push(v+c)));
+  return out;
+}
+function picFor(w){
+  const all=allWords().concat(EXTRA);
+  for(let i=0;i<all.length;i++) if(all[i].w===w) return all[i].p;
+  return null;
+}
+function rebuildDecks(){
+  S.deck.heca = shuffle(allSyllables()).slice(0,30);
+  /* sözlər: qısadan uzuna, eyni uzunluqda qarışıq */
+  S.deck.soz = shuffle(availWords()).sort((a,b)=>chars(a.w).length-chars(b.w).length);
+  S.pos.heca=0;S.pos.soz=0;
+}
+
+/* ---------- Screens ---------- */
+function show(id){['pickScreen','nameScreen','setScreen','gameScreen'].forEach(s=>$(s).classList.toggle('on',s===id));scrollTo(0,0)}
+function renderPreview(){
+  $('lp').innerHTML = selOrdered().map(u=>`<span style="background:${COLOR[u]}">${u}</span>`).join('')
+    || '<span style="background:#bbb;width:auto;padding:0 12px;font-size:16px">Hərf seçilməyib</span>';
+}
+function startGame(kid){
+  if(!S.sel.length){toast('Əvvəlcə “Valideyn bölməsi”ndən hərfləri seçin.');return}
+  S.kid=kid;store.set('kid',kid);
+  avatar.innerHTML=kidSVG(kid);setMood('idle');
+  show('gameScreen');
+  $('stars').textContent=S.stars;
+  renderTiles();rebuildDecks();setMode(S.mode);
+  talk(`Salam! Mənim adım ${kidName()}. Gəl hərfləri birləşdirək!`);
+  speak(['Salam! Mənim adım',kidName(),'Gəl oynayaq!']);
+}
+document.querySelectorAll('.kid-card').forEach(b=>b.onclick=()=>{
+  tone(660,.1,'triangle');
+  if(!S.sel.length){toast('Əvvəlcə “Valideyn bölməsi”ndən hərfləri seçin.');return}
+  openName(b.dataset.kid);
+});
+$('backBtn').onclick=()=>{stopSpeech();renderPreview();show('pickScreen')};
+avatar.onclick=()=>{setMood('wow');avatar.classList.add('jump');setTimeout(()=>{avatar.classList.remove('jump');setMood('idle')},600);talk(rnd(['Hi-hi! 😄','Hərf seç!','Oynayaq!']))};
+
+/* ---------- Modes ---------- */
+document.querySelectorAll('[data-mode]').forEach(t=>t.onclick=()=>setMode(t.dataset.mode));
+function setMode(m){
+  S.mode=m;
+  document.querySelectorAll('[data-mode]').forEach(t=>t.classList.toggle('on',t.dataset.mode===m));
+  $('checkBtn').style.display = m==='free' ? '' : 'none';
+  $('skipBtn').style.display = m==='free' ? 'none' : '';
+  $('hintBtn').style.display = m==='free' ? 'none' : '';
+  newRound();
+}
+function current(){
+  if(S.mode==='free') return null;
+  const d=S.deck[S.mode]; if(!d.length) return {empty:true};
+  const x=d[S.pos[S.mode]%d.length];
+  return S.mode==='heca' ? {w:x,p:picFor(x)||'🔤'} : x;
+}
+function newRound(){
+  S.built=[];S.lock=false;
+  S.hint = S.mode==='heca';
+  const c=current();
+  $('pic').classList.remove('bounce');
+  if(c && c.empty){
+    $('pic').textContent='🤔';
+    $('progress').textContent='';
+    $('slots').innerHTML=`<div class="empty-msg">${S.mode==='heca'
+      ? 'Heca düzəltmək üçün ən azı 1 sait (A, Ə, O...) və 1 samit (L, M, T...) seçin.'
+      : 'Bu hərflərlə söz yoxdur. Valideyn bölməsindən hərf və ya söz əlavə edin.'}</div>`;
+    $('slots').className='slots';
+    talk('Daha çox hərf lazımdır!');
+    renderFound();return;
+  }
+  if(c){
+    $('pic').textContent = S.mode==='heca' ? '🔤' : c.p;
+    const d=S.deck[S.mode];
+    $('progress').textContent = (S.mode==='heca'?'Heca ':'Söz ')+((S.pos[S.mode]%d.length)+1)+' / '+d.length;
+    if(S.mode==='heca') talk(`“${c.w}” hecasını düzəlt!`);
+    else talk('Şəklə bax. Bu nədir? Hərflərlə yaz!');
+  }else{
+    $('pic').textContent='✨';
+    $('progress').textContent='Tapdığın sözlər: '+S.found.size;
+    talk('İstədiyin hərfləri birləşdir və “Yoxla” bas!');
+  }
+  renderSlots();renderFound();
+}
+function renderSlots(win){
+  const c=current(), el=$('slots');
+  if(c && c.empty) return;
+  const target = c ? chars(c.w) : null;
+  const n = c ? target.length : Math.max(S.built.length,1);
+  let h='';
+  for(let i=0;i<n;i++){
+    const ch=S.built[i];
+    if(ch) h+=`<div class="slot filled${i===S.built.length-1?' pop':''}" style="background:${COLOR[ch]}">${ch}</div>`;
+    else h+=`<div class="slot">${c&&S.hint?`<span class="ghost">${target[i]}</span>`:''}</div>`;
+  }
+  if(!c && S.built.length && S.built.length<9) h+=`<div class="slot"></div>`;
+  el.innerHTML=h;
+  el.className='slots'+(win?' win':'');
+}
+function renderFound(){
+  $('found').innerHTML = S.mode==='free'
+    ? Array.from(S.found).map(w=>`<span>${picFor(w)||'🔤'} ${w}</span>`).join('')
+    : '';
+}
+
+/* ---------- Tiles ---------- */
+function renderTiles(){
+  const sel=selOrdered(), n=sel.length, el=$('tiles');
+  const cols = n<=6 ? Math.max(n,3) : n<=12 ? 6 : n<=21 ? 7 : 8;
+  el.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  el.style.maxWidth = (n<=6?560:640)+'px';
+  el.className='tiles'+(n>12?' many':'');
+  el.innerHTML = sel.map((u,i)=>`<button class="tile" data-u="${u}" data-i="${i}" style="background:${COLOR[u]}">${u}<small>${LOW[u]}</small></button>`).join('');
+}
+
+function addLetter(u,i){
+  if(S.lock) return;
+  const c=current();
+  if(c && c.empty) return;
+  if(c && S.built.length>=chars(c.w).length) return;
+  if(!c && S.built.length>=9) return;
+  S.built.push(u);sfx.tap(i);sayLetter(u);
+  renderSlots();
+  if(c && S.built.length===chars(c.w).length) setTimeout(check,350);
+}
+$('undoBtn').onclick=()=>{if(S.lock)return;S.built.pop();tone(300,.08,'triangle');renderSlots()};
+$('hintBtn').onclick=()=>{
+  const c=current(); if(!c||c.empty) return;
+  S.hint=true;renderSlots();speak(c.w);talk(`Bu “${c.w}” ${S.mode==='heca'?'hecasıdır':'sözüdür'}. Hərfləri tap!`);
+};
+$('skipBtn').onclick=()=>{S.pos[S.mode]++;newRound()};
+$('checkBtn').onclick=check;
+$('sayBtn').onclick=()=>{
+  const c=current();
+  if(c&&!c.empty) speak(c.w); else if(S.built.length) speak(S.built.join(''));
+  $('pic').classList.remove('bounce');void $('pic').offsetWidth;$('pic').classList.add('bounce');
+};
+function isSyllable(w){
+  const a=chars(w); if(a.length!==2) return false;
+  return isVowel(a[0])!==isVowel(a[1]);
+}
+function check(){
+  const word=S.built.join('');
+  const c=current();
+  if(c&&c.empty) return;
+  let ok, pic;
+  if(c){ok = word===c.w;pic=c.p}
+  else{
+    if(!word) return;
+    pic = picFor(word);
+    ok = !!pic || isSyllable(word);
+    pic = pic || '🔤';
+  }
+  if(ok){
+    S.lock=true;
+    const isNew = !c && !S.found.has(word);
+    if(!c){S.found.add(word);store.set('found',Array.from(S.found))}
+    if(c || isNew){S.stars++;store.set('stars',S.stars);$('stars').textContent=S.stars}
+    $('pic').textContent=pic;$('pic').classList.remove('bounce');void $('pic').offsetWidth;$('pic').classList.add('bounce');
+    renderSlots(true);sfx.win();confetti();
+    setMood('happy');avatar.classList.add('jump');
+    const p=rnd(PRAISE);
+    const kind = isSyllable(word)&&!picFor(word) ? 'heca' : 'söz';
+    talk(c ? `${p} “${word}” düzgündür! ⭐` : (isNew?`${p} “${word}” — yeni ${kind}! ⭐`:`“${word}” — bunu artıq tapmısan! 👍`));
+    speak([word,p]);
+    setTimeout(()=>{
+      avatar.classList.remove('jump');setMood('idle');
+      if(c){S.pos[S.mode]++;
+        if(S.mode==='heca' && S.pos.heca>=S.deck.heca.length){S.deck.heca=shuffle(allSyllables()).slice(0,30);S.pos.heca=0}
+        newRound()}
+      else{S.built=[];S.lock=false;renderSlots();renderFound();$('progress').textContent='Tapdığın sözlər: '+S.found.size}
+    },2000);
+  }else{
+    sfx.bad();setMood('sad');avatar.classList.add('sad');
+    const el=$('slots');el.classList.add('shake');
+    talk(c?rnd(TRY):`“${word}” — belə söz tanımıram. ${rnd(TRY)}`);
+    S.lock=true;
+    setTimeout(()=>{el.classList.remove('shake');avatar.classList.remove('sad');setMood('idle');S.built=[];S.lock=false;
+      if(c)S.hint=true;renderSlots()},800);
+  }
+}
+
+/* ---------- Tap + drag ---------- */
+let drag=null;
+if(!window.PointerEvent){
+  $('tiles').addEventListener('click',e=>{
+    const t=e.target.closest('.tile'); if(!t) return;
+    addLetter(t.dataset.u,+t.dataset.i);
+  });
+}
+$('tiles').addEventListener('pointerdown',e=>{
+  const t=e.target.closest('.tile'); if(!t) return;
+  e.preventDefault();
+  drag={u:t.dataset.u,i:+t.dataset.i,x0:e.clientX,y0:e.clientY,moved:false,el:null,id:e.pointerId};
+});
+addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.id) return;
+  if(!drag.moved && Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>10){
+    drag.moved=true;
+    drag.el=document.createElement('div');drag.el.className='drag-ghost';drag.el.style.background=COLOR[drag.u];drag.el.textContent=drag.u;
+    document.body.appendChild(drag.el);
+  }
+  if(drag.moved){
+    drag.el.style.left=e.clientX+'px';drag.el.style.top=e.clientY+'px';
+    const r=$('slots').getBoundingClientRect();
+    $('slots').classList.toggle('drop',e.clientX>r.left-20&&e.clientX<r.right+20&&e.clientY>r.top-30&&e.clientY<r.bottom+30);
+  }
+});
+addEventListener('pointerup',e=>{
+  if(!drag||e.pointerId!==drag.id) return;
+  if(!drag.moved){addLetter(drag.u,drag.i)}
+  else{
+    const over=$('slots').classList.contains('drop');
+    $('slots').classList.remove('drop');drag.el.remove();
+    if(over) addLetter(drag.u,drag.i);
+  }
+  drag=null;
+});
+addEventListener('pointercancel',()=>{if(drag&&drag.el)drag.el.remove();$('slots').classList.remove('drop');drag=null});
+
+addEventListener('keydown',e=>{
+  if(!$('gameScreen').classList.contains('on')) return;
+  if(e.target && e.target.tagName==='INPUT') return;
+  const k=azUp(e.key);
+  const sel=selOrdered(), i=sel.indexOf(k);
+  if(e.key.length===1 && i>=0) addLetter(k,i);
+  else if(e.key==='Backspace') $('undoBtn').click();
+  else if(e.key==='Enter'&&S.mode==='free') check();
+});
+
+/* ---------- Parent settings ---------- */
+const PRESETS={start:['A','Ə','L','M','T','N'],vowels:VOWELS.slice(),all:ABC.slice(),none:[]};
+function saveSel(){store.set('letters',S.sel)}
+function renderABC(){
+  $('abc').innerHTML = ABC.map(u=>`<button data-u="${u}" class="${S.sel.indexOf(u)>=0?'on':''}" style="background:${COLOR[u]}">${u}</button>`).join('');
+  const w=availWords().length, s=allSyllables().length;
+  $('selInfo').textContent = `Seçilib: ${S.sel.length} hərf · ${w} söz · ${s} heca`;
+}
+$('abc').onclick=e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const u=b.dataset.u, i=S.sel.indexOf(u);
+  if(i>=0) S.sel.splice(i,1); else {S.sel.push(u);sayLetter(u)}
+  saveSel();renderABC();renderRec();
+};
+document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{
+  S.sel=PRESETS[b.dataset.preset].slice();saveSel();renderABC();renderRec();
+});
+function renderCustom(){
+  $('cwList').innerHTML = S.custom.map((x,i)=>`<span>${x.p} ${x.w}<button data-del="${i}">✕</button></span>`).join('')
+    || '<span style="opacity:.6;padding-right:10px">Hələ söz yoxdur</span>';
+}
+$('cwAdd').onclick=()=>{
+  const w=azUp($('cwWord').value.replace(/\s+/g,''));
+  const p=$('cwPic').value.trim()||'🔤';
+  if(!w){toast('Söz yazın.');return}
+  const bad=chars(w).filter(c=>ABC.indexOf(c)<0);
+  if(bad.length){toast('Bu hərflər əlifbada yoxdur: '+bad.join(' '));return}
+  if(allWords().some(x=>x.w===w)){toast('“'+w+'” artıq var.');return}
+  S.custom.push({w:w,p:p});store.set('custom',S.custom);
+  $('cwWord').value='';$('cwPic').value='';
+  const miss=chars(w).filter(c=>S.sel.indexOf(c)<0);
+  if(miss.length) toast('“'+w+'” əlavə olundu. Oyunda çıxması üçün bu hərfləri də seçin: '+Array.from(new Set(miss)).join(' '));
+  renderCustom();renderABC();renderRec();
+};
+$('cwList').onclick=e=>{
+  const b=e.target.closest('[data-del]'); if(!b) return;
+  S.custom.splice(+b.dataset.del,1);store.set('custom',S.custom);renderCustom();renderABC();renderRec();
+};
+
+/* --- Recording --- */
+let recTab='h', rec=null, micStream=null;
+document.querySelectorAll('[data-rt]').forEach(b=>b.onclick=()=>{
+  recTab=b.dataset.rt;
+  document.querySelectorAll('[data-rt]').forEach(x=>x.classList.toggle('on',x===b));
+  renderRec();
+});
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function renderRec(){
+  if(!$('setScreen').classList.contains('on')) return;
+  let items;
+  if(recTab==='h') items=selOrdered().map(u=>({k:u,label:u+' '+LOW[u]}));
+  else if(recTab==='s') items=allSyllables().map(s=>({k:s,label:s}));
+  else items=availWords().map(x=>({k:x.w,label:x.p+' '+x.w}));
+  $('recList').innerHTML = items.length ? items.map(x=>
+    `<div class="rrow${REC[x.k]?' has':''}" data-k="${esc(x.k)}"><b>${esc(x.label)}</b>`+
+    `<button class="rc" title="Yaz">🎙</button><button class="pl" title="Dinlə">▶</button><button class="dl" title="Sil">🗑</button></div>`).join('')
+    : '<div style="opacity:.6">Əvvəlcə hərf seçin.</div>';
+}
+$('recList').onclick=e=>{
+  const b=e.target.closest('button'), row=e.target.closest('.rrow'); if(!b||!row) return;
+  const k=row.dataset.k;
+  if(b.classList.contains('rc')) toggleRec(k,b);
+  else if(b.classList.contains('pl')){stopSpeech();playSrc(REC[k])}
+  else if(b.classList.contains('dl')){delete REC[k];idbDel(k);renderRec()}
+};
+function getMic(){
+  if(micStream && micStream.getTracks().some(t=>t.readyState==='live')) return Promise.resolve(micStream);
+  return navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{micStream=s;return s});
+}
+function releaseMic(){
+  stopRec();
+  if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null}
+}
+function toggleRec(k,btn,label){
+  if(rec){const same=rec.k===k;stopRec();if(same)return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){
+    toast('Bu brauzer səs yazmağı dəstəkləmir. Oyunu Chrome və ya Safari-də link kimi (https) açın.');return;
+  }
+  stopSpeech();
+  getMic().then(stream=>{
+    const mr=new MediaRecorder(stream), chunks=[];
+    mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+    mr.onstop=()=>{
+      if(!chunks.length) return;
+      const blob=new Blob(chunks,{type:mr.mimeType||'audio/webm'});
+      const fr=new FileReader();
+      fr.onload=()=>{REC[k]=fr.result;idbPut(k,fr.result);renderRec();playSrc(REC[k])};
+      fr.readAsDataURL(blob);
+    };
+    mr.start();
+    rec={k:k,mr:mr,btn:btn,label:label||'🎙',timer:setTimeout(stopRec,3000)};
+    btn.classList.add('recording');btn.textContent=label?'⏹ Dayandır':'⏹';
+  }).catch(()=>toast('Mikrofona icazə verilmədi. Brauzer ayarlarından mikrofonu açın.'));
+}
+function stopRec(){
+  if(!rec) return;
+  clearTimeout(rec.timer);
+  try{if(rec.mr.state!=='inactive')rec.mr.stop()}catch(e){}
+  rec.btn.classList.remove('recording');rec.btn.textContent=rec.label;
+  rec=null;
+}
+
+$('openSet').onclick=()=>{show('setScreen');renderABC();renderCustom();renderRec()};
+$('setDone').onclick=()=>{
+  releaseMic();
+  if(!S.sel.length){toast('Ən azı bir hərf seçin.');return}
+  renderPreview();show('pickScreen');
+};
+
+/* ---------- Tam ekran ---------- */
+const fsBtn=$('fsBtn');
+function fsOn(){return !!(document.fullscreenElement||document.webkitFullscreenElement)}
+function fsLabel(){fsBtn.textContent=fsOn()?'✕ Kiçilt':'⛶ Tam ekran'}
+fsBtn.onclick=()=>{
+  const de=document.documentElement;
+  try{
+    if(fsOn()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return}
+    const req=de.requestFullscreen||de.webkitRequestFullscreen;
+    if(req){const r=req.call(de);if(r&&r.catch)r.catch(()=>toast('Tam ekran açılmadı.'))}
+    else toast('iPhone-da: Safari-də “Paylaş” ⬆️ → “Ana ekrana əlavə et”. Oyun ordan tam ekran açılacaq.');
+  }catch(e){toast('Tam ekran açılmadı.')}
+};
+document.addEventListener('fullscreenchange',fsLabel);
+document.addEventListener('webkitfullscreenchange',fsLabel);
+if(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)) fsBtn.style.display='none';
+
+/* ---------- Start ---------- */
+renderPreview();renderCardNames();
+idbOpen().then(idbLoad).then(renderRec);
+setTimeout(()=>{loadVoices();$('voiceNote').textContent = hasAzVoice()
+  ? '🔊 Azərbaycan dilində səs hazırdır.'
+  : (Object.keys(AUD).length
+      ? '🔊 Səslər Azərbaycan dilindədir. Öz sözləriniz və adlar üçün Valideyn bölməsində səsinizi yaza bilərsiniz.'
+      : '🔊 Bu cihazda Azərbaycan dilində səs yoxdur. Valideyn bölməsində öz səsinizi yazın.')},800);
+if(S.kid){const k=document.querySelector(`.kid-card[data-kid="${S.kid}"]`);if(k)k.style.transform='scale(1.04)'}
+</script>
+</body>
+</html>
