@@ -167,7 +167,7 @@
   .crit.counted i,.egg.counted i{display:grid;animation:pop .3s}
   .crit.counted .in{animation:hop .4s}
   .hopall .crit .in{animation:hop .5s ease-in-out 3}
-  @media (orientation:landscape){.count .choices,.tens .choices{flex-direction:column}}
+  @media (orientation:landscape){.count .choices,.tens .choices,.place .choices{flex-direction:column}}
 
   /* match */
   .match .zz{width:calc(var(--u)*24)}
@@ -267,16 +267,52 @@
 
   /* explore */
   .exShow{position:relative;z-index:1;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*4);flex-wrap:wrap;padding:0 calc(var(--u)*2)}
-  .exNum{font-size:calc(var(--u)*30);font-weight:800;line-height:.9;text-shadow:0 calc(var(--u)*1.2) 0 rgba(0,0,0,.08);animation:pop .4s}
+  .exNum{font-size:calc(var(--u)*22);font-weight:800;line-height:.9;text-shadow:0 calc(var(--u)*1.2) 0 rgba(0,0,0,.08);animation:pop .4s}
   .exInfo{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1.5)}
+  .exTxt{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1)}
+  @media (orientation:landscape){.exNum{font-size:calc(var(--u)*26)}.exInfo{flex-direction:row;align-items:flex-end;gap:calc(var(--u)*3)}}
+  .place .rod{padding:3px 6px}
   .exWord{font-size:max(22px,calc(var(--u)*7));font-weight:800;background:#fff;border-radius:calc(var(--u)*4);padding:0 calc(var(--u)*4);box-shadow:var(--sh)}
   .exTfs{display:flex;gap:calc(var(--u)*1.5);flex-wrap:wrap;justify-content:center}
-  #exZ{width:calc(var(--u)*22)}
-  .exPad{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);gap:calc(var(--u)*1.2);padding:calc(var(--u)*1.5) calc(var(--u)*2) calc(var(--u)*2.5);width:100%;max-width:1000px;margin:0 auto}
-  @media (orientation:landscape){.exPad{grid-template-columns:repeat(11,1fr)}}
-  .pad{height:calc(var(--u)*11);min-height:44px;border-radius:calc(var(--u)*3);background:var(--c);color:#fff;font-size:max(20px,calc(var(--u)*6.5));font-weight:800;line-height:1;
+  #exZ{width:calc(var(--u)*20)}
+  @media (orientation:portrait){#exZ{display:none}}
+  .exShow.big #exZ{display:none}
+  .exNum .dT{color:#2d7be0}.exNum .dO{color:var(--orange)}.exNum .dH{color:#2d7be0}
+  .pvcap{font-weight:800;font-size:max(15px,calc(var(--u)*4));color:var(--muted)}
+  .pvcap b{color:#2d7be0}.pvcap s{text-decoration:none;color:var(--orange)}
+  .exCtl{position:relative;z-index:1;display:flex;gap:calc(var(--u)*1.6);justify-content:center;padding:0 calc(var(--u)*2)}
+  .stp{flex:1;max-width:calc(var(--u)*24);height:calc(var(--u)*11);min-height:46px;border-radius:calc(var(--u)*3);background:#fff;font-weight:800;
+       font-size:max(20px,calc(var(--u)*6));line-height:1;box-shadow:var(--sh);color:var(--ink)}
+  .stp:active{transform:translateY(3px)}
+  .stp[disabled]{opacity:.35}
+  .rng{display:flex;gap:4px;background:#fff;border-radius:14px;padding:4px;box-shadow:var(--sh);flex-wrap:wrap;justify-content:center}
+  .rng button{font-weight:800;font-size:max(14px,calc(var(--u)*3.6));color:var(--muted);padding:2px 10px;border-radius:10px}
+  .rng button.on{background:var(--orange);color:#fff}
+  .exPad{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(max(44px,calc(var(--u)*11)),1fr));gap:calc(var(--u)*1.2);
+         padding:calc(var(--u)*1.5) calc(var(--u)*2) calc(var(--u)*2.5);width:100%;max-width:1000px;margin:0 auto}
+  .pad{height:calc(var(--u)*11);min-height:44px;border-radius:calc(var(--u)*3);background:var(--c);color:#fff;font-size:max(18px,calc(var(--u)*6));font-weight:800;line-height:1;
        box-shadow:0 calc(var(--u)*.9) 0 rgba(0,0,0,.2);text-shadow:0 2px 0 rgba(0,0,0,.15)}
   .pad.sel{transform:translateY(-4px) scale(1.06);box-shadow:0 0 0 4px #fff,0 calc(var(--u)*.9) 0 rgba(0,0,0,.2)}
+
+  /* tens rods + ones cubes (place value) */
+  .pv{--c:min(calc(var(--u)*3),3.2vw,2.6vh);display:flex;align-items:flex-end;gap:calc(var(--c)*.45);flex-wrap:nowrap}
+  .rod{position:relative;display:flex;flex-direction:column;gap:1px;padding:2px;background:#1f74c9;border-radius:4px;flex:none}
+  .rod b{display:block;width:var(--c);height:var(--c);background:#5cb2ff;border-radius:2px}
+  .units{display:flex;flex-direction:column-reverse;gap:1px;padding:2px;flex:none}
+  .units b{display:block;width:var(--c);height:var(--c);background:var(--orange);border-radius:2px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+  .place .pv{--c:min(calc(var(--u)*4),3.4vw);gap:calc(var(--c)*.6)}
+  .rb{touch-action:manipulation}
+  .rb i,.ub i{position:absolute;top:-1.1em;left:50%;transform:translateX(-50%);min-width:2.2em;padding:0 3px;border-radius:99px;background:var(--purple);color:#fff;font-style:normal;
+       font-weight:800;font-size:max(12px,calc(var(--u)*3.2));line-height:1.6;display:none;text-align:center}
+  .rb.counted i,.ub.counted i{display:block;animation:pop .3s}
+  .rb.counted{background:#0f5aa6}
+  .ubox{display:flex;flex-direction:column-reverse;flex-wrap:wrap;align-content:flex-start;height:calc(var(--c)*10 + 13px);gap:2px;margin-left:calc(var(--c)*.8)}
+  .ub{position:relative;width:calc(var(--c)*1.6);height:calc(var(--c)*1.6);display:grid;place-items:center;flex:none}
+  .ub b{width:var(--c);height:var(--c);background:var(--orange);border-radius:3px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+  .ub.counted b{background:#e8631b}
+  .ch.d3{font-size:max(22px,calc(var(--u)*8))}
+  .car b.d2{font-size:calc(var(--cw)*.46)}
+  .car b.d3{font-size:calc(var(--cw)*.34)}
 
   /* overlays */
   .overlay{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(40,20,70,.45)}
@@ -393,10 +429,15 @@
   <div class="hill"></div>
   <div class="top">
     <button class="ib" id="exBack" data-ta="map">🗺</button>
-    <div class="grow"></div>
+    <div class="mid"><div class="rng" id="exRange" role="group">
+      <button data-r="10">0–10</button><button data-r="20">0–20</button><button data-r="50">0–50</button><button data-r="100">0–100</button></div></div>
     <button class="ib" id="exSay" data-ta="say">🔊</button>
   </div>
   <div class="exShow" id="exShow"></div>
+  <div class="exCtl">
+    <button class="stp" id="exM10" aria-label="-10">−10</button><button class="stp" id="exM1" aria-label="-1">◀</button>
+    <button class="stp" id="exP1" aria-label="+1">▶</button><button class="stp" id="exP10" aria-label="+10">+10</button>
+  </div>
   <div class="exPad" id="exPad"></div>
 </section>
 
@@ -425,12 +466,13 @@
     <div class="prow"><span data-t="pSfx">Səs effektləri</span><button class="tog" id="tSfx" aria-pressed="true" data-ta="pSfx"></button></div>
     <div class="prow"><span data-t="pAll">Bütün mərhələləri aç</span><button class="tog" id="tAll" aria-pressed="false" data-ta="pAll"></button></div>
     <div class="prow"><span data-t="pResetL">Ulduzlar</span><button class="pbtn warn" id="pReset" data-t="pReset">Sıfırla</button></div>
-    <p class="small" id="pVoiceInfo"></p>
+    <p class="small" data-t="pAudio"></p>
     <p class="small" data-t="pKeys"></p>
     <a class="hub" href="../" data-t="pHub">← Bütün oyunlar</a>
   </div>
 </div>
 
+<script src="audio/manifest.js"></script>
 <script>
 'use strict';
 /* ================= helpers ================= */
@@ -447,25 +489,42 @@ const store={
 const field=$('field');
 
 /* ================= language data ================= */
-const NUM={
-  az:['sıfır','bir','iki','üç','dörd','beş','altı','yeddi','səkkiz','doqquz','on'],
-  ru:['ноль','один','два','три','четыре','пять','шесть','семь','восемь','девять','десять'],
-  en:['zero','one','two','three','four','five','six','seven','eight','nine','ten']
+/* number words 0–100 (screen text + speech fallback) */
+const NW={
+  az:{u:['sıfır','bir','iki','üç','dörd','beş','altı','yeddi','səkkiz','doqquz'],t:['','on','iyirmi','otuz','qırx','əlli','altmış','yetmiş','səksən','doxsan'],h:'yüz'},
+  ru:{u:['ноль','один','два','три','четыре','пять','шесть','семь','восемь','девять'],
+      teen:['десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'],
+      t:['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'],h:'сто'},
+  en:{u:['zero','one','two','three','four','five','six','seven','eight','nine'],
+      teen:['ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'],
+      t:['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'],h:'one hundred'}
 };
-const TEENS={
-  ru:['одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать','двадцать'],
-  en:['eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty']
-};
-/* Azərbaycan dilində çıxışlıq hal (-dan/-dən): "yeddi beşdən çoxdur" */
-const ABL_AZ=['sıfırdan','birdən','ikidən','üçdən','dörddən','beşdən','altıdan','yeddidən','səkkizdən','doqquzdan','ondan'];
-function word(n){
-  const l=S.lang;
-  if(n<=10) return NUM[l][n];
-  if(l==='az') return n===20?'iyirmi':'on '+NUM.az[n-10];
-  return TEENS[l][n-11];
+function word(n,l=S.lang){
+  const d=NW[l],t=Math.floor(n/10),o=n%10;
+  if(n>=100)return d.h;
+  if(n<10)return d.u[n];
+  if(l==='az')return d.t[t]+(o?' '+d.u[o]:'');
+  if(n<20)return d.teen[n-10];
+  return d.t[t]+(o?(l==='en'?'-':' ')+d.u[o]:'');
 }
-const FD={n:n=>String(n),a:n=>String(n)+'-'+ABL_AZ[n].slice(NUM.az[n].length)};
-const FS={n:n=>word(n),a:n=>ABL_AZ[n]};
+/* Azərbaycan dilində çıxışlıq hal (-dan/-dən): "7 5-dən çoxdur" */
+const ABL_AZ=['sıfırdan','birdən','ikidən','üçdən','dörddən','beşdən','altıdan','yeddidən','səkkizdən','doqquzdan','ondan'];
+const FD={n:n=>String(n),a:n=>String(n)+'-'+ABL_AZ[n].slice(word(n,'az').length)};
+/* Speech = list of clip keys (audio/<lang>/<key>.mp3, see tools/make_audio.py) */
+const NK=n=>'n'+n;
+function placeKeys(n){const t=Math.floor(n/10),o=n%10;return n<10?[]:['tn_'+t].concat(o?['on_'+o]:[])}
+const SK={
+  feed:n=>['feed_'+n],
+  find:n=>n<=10?['find_'+n]:(S.lang==='az'?[NK(n),'find_t']:['find_h',NK(n)]),
+  match:n=>['match_'+n],
+  tower:n=>['tower_'+n],
+  isMore:(a,b)=>[NK(a),'cmp_more_'+b],isFewer:(a,b)=>[NK(a),'cmp_fewer_'+b],
+  isBigger:(a,b)=>[NK(a),'cmp_bigger_'+b],isSmaller:(a,b)=>[NK(a),'cmp_smaller_'+b],
+  add:(a,b)=>[NK(a),'plus_'+b,'ask_add'],addOk:(a,b,c)=>[NK(a),'plus_'+b,'eq_'+c],
+  sub:(a,b)=>[NK(a),'minus_'+b,'ask_sub'],subOk:(a,b,c)=>[NK(a),'minus_'+b,'eq_'+c],
+  tensOk:k=>['tens_'+k],
+  placeOk:(t,o,n)=>placeKeys(n).concat([NK(n)])
+};
 
 /* Spoken / shown phrases. f.n(x) = number (digit on screen, word in speech) */
 const P={
@@ -495,6 +554,9 @@ const P={
     subOk:(f,a,b,c)=>`${f.n(a)} çıx ${f.n(b)} — ${f.n(c)}!`,
     eggs:'Neçə yumurta var?',
     tensOk:(f,k,n)=>`${f.n(10)} və ${f.n(k)} — ${f.n(n)}!`,
+    cubes:'Neçə kub var? Onluqları və təklikləri say!',
+    placeOk:(f,t,o,n)=>`${t} onluq, ${o} təklik — ${n}!`,
+    pv:(t,o)=>`<b>${t} onluq</b>, <s>${o} təklik</s>`,
     tryA:['Yenə cəhd et!','Bir də bax!','Az qaldı!'],
     praise:['Afərin!','Əla!','Super!','Bravo!','Çox gözəl!','Möhtəşəm!','Sən bacarırsan!'],
     stars:['','Ura! Bir ulduz!','Ura! İki ulduz!','Ura! Üç ulduz!'],
@@ -511,7 +573,7 @@ const P={
     tower:(f,n)=>`Построй башню: ${f.n(n)}!`,
     low:'Башня низкая! Добавь кубик.',
     high:'Слишком высокая! Убери кубик.',
-    train:'Какой цифры не хватает?',
+    train:'Какого числа не хватает?',
     more:'Зузу голодный! Где больше?',
     fewer:'Зузу сытый! Где меньше?',
     bigger:'Какое число больше?',
@@ -526,6 +588,9 @@ const P={
     subOk:(f,a,b,c)=>`${f.n(a)} минус ${f.n(b)} — ${f.n(c)}!`,
     eggs:'Сколько яиц?',
     tensOk:(f,k,n)=>`${f.n(10)} и ${f.n(k)} — ${f.n(n)}!`,
+    cubes:'Сколько кубиков? Считай десятки и единицы!',
+    placeOk:(f,t,o,n)=>`${t} дес. и ${o} ед. — ${n}!`,
+    pv:(t,o)=>`<b>${t} дес.</b> <s>${o} ед.</s>`,
     tryA:['Попробуй ещё!','Посмотри ещё раз!','Почти!'],
     praise:['Молодец!','Отлично!','Супер!','Браво!','Здорово!','Умница!','Ура!'],
     stars:['','Ура! Одна звезда!','Ура! Две звезды!','Ура! Три звезды!'],
@@ -557,6 +622,9 @@ const P={
     subOk:(f,a,b,c)=>`${f.n(a)} take away ${f.n(b)} is ${f.n(c)}!`,
     eggs:'How many eggs?',
     tensOk:(f,k,n)=>`${f.n(10)} and ${f.n(k)} is ${f.n(n)}!`,
+    cubes:'How many cubes? Count the tens and the ones!',
+    placeOk:(f,t,o,n)=>`${t} tens and ${o} ones — ${n}!`,
+    pv:(t,o)=>`<b>${t} tens</b>, <s>${o} ones</s>`,
     tryA:['Try again!','Look again!','Almost!'],
     praise:['Great job!','Awesome!','Super!','Well done!','Hooray!','You did it!','Fantastic!'],
     stars:['','Hooray! One star!','Hooray! Two stars!','Hooray! Three stars!'],
@@ -567,22 +635,19 @@ const P={
 const UI={
   az:{docTitle:'Zuzu və Rəqəmlər',title1:'Zuzu',title2:'və Rəqəmlər',play:'Oyna',home:'Ana səhifə',map:'Mərhələlər',say:'Yenə dinlə',again:'Yenidən',next:'Növbəti',
     parent:'Valideynlər üçün',explore:'Rəqəmlərlə tanışlıq',
-    pIntro:'Oyun 3–7 yaşlı uşaqlar üçündür və oxumaq tələb etmir: tapşırıqları Zuzu səsli deyir. 12 mərhələ: rəqəmləri tanımaq, əşyaları saymaq, sayı rəqəmlə uyğunlaşdırmaq, çox/az müqayisəsi, 10 daxilində toplama və çıxma, 11–20 arası ədədlər. Hər mərhələdə 5 tapşırıq var; səhv nə qədər az olsa, ulduz o qədər çox olur. 🔢 düyməsi — sərbəst tanışlıq (0–20).',
+    pIntro:'Oyun 3–7 yaşlı uşaqlar üçündür və oxumaq tələb etmir: tapşırıqları Zuzu səsli deyir. 15 mərhələ: rəqəmləri tanımaq, əşyaları saymaq, sayı rəqəmlə uyğunlaşdırmaq, çox/az müqayisəsi, 10 daxilində toplama və çıxma, 11–20, sonra 100-ə qədər ədədlər (onluqlar və təkliklər). Hər mərhələdə 5 tapşırıq var; səhv nə qədər az olsa, ulduz o qədər çox olur. 🔢 düyməsi — sərbəst tanışlıq: 0–10, 0–20, 0–50 və ya 0–100.',
     pLang:'Dil',pVoice:'Zuzunun səsi (danışıq)',pSfx:'Səs effektləri',pAll:'Bütün mərhələləri aç',pResetL:'Ulduzlar',pReset:'Sıfırla',pSure:'Əminsiniz? Yenə basın',
-    pKeys:'Klaviatura / TV pultu: oxlar — seçmək, Enter — basmaq, rəqəm düymələri — cavab, Esc — geri.',pHub:'← Bütün oyunlar',
-    vTr:'Bu cihazda Azərbaycan səsi tapılmadı — türk səsi işlədilir.',vNone:'Bu cihazda Azərbaycan dilində danışan səs tapılmadı — oyun səs effektləri ilə davam edir. Başqa dil seçə və ya cihaza səs paketi əlavə edə bilərsiniz.',vOk:'Səs: '},
+    pKeys:'Klaviatura / TV pultu: oxlar — seçmək, Enter — basmaq, rəqəm düymələri — cavab, Esc — geri.',pHub:'← Bütün oyunlar',pAudio:'🔊 Zuzunun səsi oyunun içindədir (Azərbaycan, rus və ingilis dilində yazılmış səslər) — internet olan istənilən telefonda, planşetdə və kompüterdə işləyir. Səs gəlmirsə, cihazın səsini artırın.'},
   ru:{docTitle:'Зузу и цифры',title1:'Зузу',title2:'и цифры',play:'Играть',home:'Главная',map:'Уровни',say:'Послушать ещё раз',again:'Ещё раз',next:'Дальше',
     parent:'Для родителей',explore:'Знакомство с цифрами',
-    pIntro:'Игра для детей 3–7 лет, читать не нужно — Зузу озвучивает задания. 12 уровней: узнавание цифр, счёт предметов, соответствие количества и цифры, сравнение «больше/меньше», сложение и вычитание в пределах 10, числа от 11 до 20. В каждом уровне 5 заданий; чем меньше ошибок, тем больше звёзд. Кнопка 🔢 — свободное знакомство с числами 0–20.',
+    pIntro:'Игра для детей 3–7 лет, читать не нужно — Зузу озвучивает задания. 15 уровней: узнавание цифр, счёт предметов, соответствие количества и цифры, сравнение «больше/меньше», сложение и вычитание в пределах 10, числа 11–20 и дальше до 100 (десятки и единицы). В каждом уровне 5 заданий; чем меньше ошибок, тем больше звёзд. Кнопка 🔢 — свободное знакомство с числами: 0–10, 0–20, 0–50 или 0–100.',
     pLang:'Язык',pVoice:'Голос Зузу (речь)',pSfx:'Звуковые эффекты',pAll:'Открыть все уровни',pResetL:'Звёзды',pReset:'Сбросить',pSure:'Точно? Нажмите ещё раз',
-    pKeys:'Клавиатура / пульт ТВ: стрелки — выбор, Enter — нажать, цифры — ответ, Esc — назад.',pHub:'← Все игры',
-    vTr:'',vNone:'На этом устройстве не найден русский голос — игра продолжится со звуковыми эффектами. Можно выбрать другой язык или установить голосовой пакет.',vOk:'Голос: '},
+    pKeys:'Клавиатура / пульт ТВ: стрелки — выбор, Enter — нажать, цифры — ответ, Esc — назад.',pHub:'← Все игры',pAudio:'🔊 Голос Зузу встроен в игру (записанные фразы на азербайджанском, русском и английском) — работает на любом телефоне, планшете и компьютере с интернетом. Если звука нет, прибавьте громкость устройства.'},
   en:{docTitle:'Zuzu and Numbers',title1:'Zuzu',title2:'and Numbers',play:'Play',home:'Home',map:'Stages',say:'Listen again',again:'Play again',next:'Next',
     parent:'For parents',explore:'Meet the numbers',
-    pIntro:'For ages 3–7, no reading needed — Zuzu speaks every task. 12 stages: recognising numerals, counting objects, matching quantities to numerals, comparing more/fewer, adding and taking away within 10, and the numbers 11–20. Each stage has 5 tasks; fewer mistakes earn more stars. The 🔢 button opens free exploration of 0–20.',
+    pIntro:'For ages 3–7, no reading needed — Zuzu speaks every task. 15 stages: recognising numerals, counting objects, matching quantities to numerals, comparing more/fewer, adding and taking away within 10, the numbers 11–20 and then up to 100 (tens and ones). Each stage has 5 tasks; fewer mistakes earn more stars. The 🔢 button opens free exploration: 0–10, 0–20, 0–50 or 0–100.',
     pLang:'Language',pVoice:"Zuzu's voice (speech)",pSfx:'Sound effects',pAll:'Unlock all stages',pResetL:'Stars',pReset:'Reset',pSure:'Sure? Tap again',
-    pKeys:'Keyboard / TV remote: arrows to move, Enter to press, number keys to answer, Esc to go back.',pHub:'← All games',
-    vTr:'',vNone:'No English voice was found on this device — the game continues with sound effects only.',vOk:'Voice: '}
+    pKeys:'Keyboard / TV remote: arrows to move, Enter to press, number keys to answer, Esc to go back.',pHub:'← All games',pAudio:'🔊 Zuzu\'s voice is built into the game (recorded Azerbaijani, Russian and English phrases) — it works on any phone, tablet or computer with internet. If you hear nothing, turn the device volume up.'}
 };
 
 /* ================= state ================= */
@@ -599,9 +664,12 @@ const STAGES=[
   {id:'s9', icon:'⚖️',m:'compare',lo:1,hi:10,         cap:'< >'},
   {id:'s10',icon:'➕',m:'add',    lo:1,hi:10,         cap:'≤ 10'},
   {id:'s11',icon:'➖',m:'sub',    lo:0,hi:10,         cap:'≤ 10'},
-  {id:'s12',icon:'🥚',m:'tens',   lo:11,hi:20,        cap:'11–20'}
+  {id:'s12',icon:'🥚',m:'tens',   lo:11,hi:20,        cap:'11–20'},
+  {id:'s13',icon:'🎈',m:'balloon',lo:20,hi:99,k:4,pv:true,cap:'20–99'},
+  {id:'s14',icon:'🧮',m:'place',  lo:21,hi:99,        cap:'10 + 1'},
+  {id:'s15',icon:'🚂',m:'train',  lo:10,hi:100,big:true,cap:'10–100'}
 ];
-const SCOL=['#ff4d8d','#8e5cf7','#22c55e','#3fa2ff','#ff8a3d','#a55eea','#ff6b81','#1dd1a1','#2d7be0','#ff9f43','#e84393','#00a884'];
+const SCOL=['#ff4d8d','#8e5cf7','#22c55e','#3fa2ff','#ff8a3d','#a55eea','#ff6b81','#1dd1a1','#2d7be0','#ff9f43','#e84393','#00a884','#7c5cff','#1f74c9','#f0932b'];
 const NCOL=['#8e5cf7','#ff4d8d','#ff8a3d','#e6a100','#22c55e','#3fa2ff','#a55eea','#ff5e57','#16a085','#2d7be0','#e84393'];
 const col=n=>NCOL[((n%11)+11)%11];
 const FOODS=['🍓','🍎','🍌','🍇','🍒','🍪','🍩','🥕','🍉','🍐','🍊','🍑','🧁'];
@@ -614,10 +682,11 @@ let prog=store.get('reqem-prog',null);
 if(!prog||typeof prog!=='object'||typeof prog.st!=='object'||!prog.st) prog={st:{},all:false};
 let langInit='az';
 try{const s=localStorage.getItem('l2r2-lang');if(s&&P[s])langInit=s}catch(e){}
-const S={lang:langInit,scr:'home',si:0,round:0,mist:0,lock:false,cool:0,tok:0,plan:[],last:null,base:'happy',kbd:false,exN:1,
+const S={lang:langInit,scr:'home',si:0,round:0,mist:0,lock:false,cool:0,tok:0,plan:[],last:null,base:'happy',kbd:false,exN:1,exR:[10,20,50,100].indexOf(store.get('reqem-exrange',20))>=0?store.get('reqem-exrange',20):20,
   sfx:store.get('reqem-sfx',true)!==false,voice:store.get('reqem-voice',true)!==false};
 const PH=()=>P[S.lang];
-function L(key,...args){const v=P[S.lang][key];if(typeof v==='string')return{t:v,s:v};return{t:v(FD,...args),s:v(FS,...args)}}
+/* L(key,...) -> {t: text on screen (digits), s: clip keys to speak} */
+function L(key,...args){const v=P[S.lang][key];return{t:typeof v==='string'?v:v(FD,...args),s:SK[key]?SK[key](...args):[key]}}
 const alive=t=>t===S.tok;
 const busy=()=>S.lock||Date.now()<S.cool;
 function saveProg(){store.set('reqem-prog',prog)}
@@ -662,63 +731,104 @@ const sfx={
   click(){tone(660,.07,'triangle',0,.1)}
 };
 
-/* ================= speech (Web Speech API) ================= */
+/* ================= voice =================
+   Recorded clips: audio/<lang>/<key>.mp3, listed in audio/manifest.js (window.AUD_PACK).
+   A sentence is a list of keys played back-to-back through two reusable <audio>
+   elements (one plays, the other preloads the next clip). HTMLAudioElement is used
+   for the voice because iOS mutes WebAudio with the silent switch.
+   Web Speech is only a last resort when a clip is missing or fails to load. */
+const PACK=window.AUD_PACK||{};
 const LANGTAG={az:'az-AZ',ru:'ru-RU',en:'en-US'};
 const hasTTS='speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
 let voices=[];
-function loadVoices(){try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}voiceNote()}
+function loadVoices(){try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}}
 if(hasTTS){try{loadVoices();speechSynthesis.addEventListener?speechSynthesis.addEventListener('voiceschanged',loadVoices):(speechSynthesis.onvoiceschanged=loadVoices)}catch(e){}}
-function pickVoice(){
-  if(!hasTTS)return null;
-  const l=S.lang,re=new RegExp('^'+l,'i');
-  let v=voices.filter(x=>re.test(x.lang));
-  if(l==='en')v.sort((a,b)=>(/en.US/i.test(b.lang)?1:0)-(/en.US/i.test(a.lang)?1:0));
-  if(v.length){const loc=v.filter(x=>x.localService);return{v:(loc[0]||v[0]),mode:'native'}}
-  if(l==='az'){const tr=voices.find(x=>/^tr/i.test(x.lang));if(tr)return{v:tr,mode:'tr'}}
-  if(!voices.length)return{v:null,mode:'blind'};   /* list not loaded yet — try by language tag */
-  if(l==='en')return{v:null,mode:'blind'};
-  return null;                                     /* no suitable voice: stay silent instead of wrong accent */
+function ttsSay(text,done){
+  if(!hasTTS||!text){done();return}
+  const re=new RegExp('^'+S.lang,'i'),vs=voices.filter(x=>re.test(x.lang)),v=vs.find(x=>x.localService)||vs[0];
+  if(!v&&voices.length){done();return}          /* no voice for this language: stay silent, never a wrong accent */
+  let fin=false,wd=0;const end=()=>{if(fin)return;fin=true;clearTimeout(wd);VO.abort=null;done()};
+  VO.abort=()=>{try{speechSynthesis.cancel()}catch(e){}end()};
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    if(v){u.voice=v;u.lang=v.lang}else u.lang=LANGTAG[S.lang];
+    u.rate=.9;u.pitch=1.15;u.onend=end;u.onerror=end;
+    wd=setTimeout(end,1800+text.length*110);
+    speechSynthesis.speak(u);
+  }catch(e){end()}
 }
-/* Azərbaycan səsi yoxdursa türk səsi: sözləri ona yaxın yazırıq */
-function trify(t){
-  return t.replace(/doqquz/gi,'dokuz').replace(/səkkiz/gi,'sekiz').replace(/yeddi/gi,'yedi').replace(/dörd/gi,'dört').replace(/iyirmi/gi,'yirmi')
-          .replace(/Ə/g,'E').replace(/ə/g,'e').replace(/Q/g,'G').replace(/q/g,'g').replace(/X/g,'H').replace(/x/g,'h');
+/* tiny silent WAV used to unlock the audio elements on the first tap (iOS autoplay rules) */
+const SILENT=(()=>{try{const n=800,b=new ArrayBuffer(44+n*2),v=new DataView(b),w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i))};
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,8000,true);v.setUint32(28,16000,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  return URL.createObjectURL(new Blob([b],{type:'audio/wav'}))}catch(e){return ''}})();
+const VO={els:[],cur:0,unlocked:false,wd:0,abort:null,failed:{}};
+for(let i=0;i<2;i++){const a=new Audio();a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('webkit-playsinline','');a._k='';VO.els.push(a)}
+const clipUrl=(k,l=S.lang)=>'audio/'+l+'/'+k+'.mp3';
+const hasClip=(k,l=S.lang)=>!!(PACK[l]&&PACK[l][k])&&!VO.failed[l+'/'+k];
+function unlockVoice(){
+  if(VO.unlocked)return;VO.unlocked=true;
+  try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  if(SILENT)VO.els.forEach(a=>{if(a._k)return;try{a.src=SILENT;a._k=SILENT;const p=a.play();if(p&&p.then)p.then(()=>{if(a._k===SILENT)a.pause()}).catch(()=>{})}catch(e){}});
+  if(hasTTS){try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+  warmClips();
+}
+/* fill the HTTP cache with the clips heard most often (counting, praise) */
+const warmed={};
+function warmClips(){
+  const l=S.lang;if(warmed[l]||!/^https?:/.test(location.protocol)||!window.fetch)return;warmed[l]=1;
+  const keys=range(0,20).map(NK).concat(range(0,6).map(i=>'praise_'+i),['try_0','try_1','try_2','hello','stars_1','stars_2','stars_3','giggle']);
+  keys.forEach((k,i)=>setTimeout(()=>{if(hasClip(k,l))fetch(clipUrl(k,l)).catch(()=>{})},i*40));
+}
+function flat(x){const o=[];(function f(v){if(Array.isArray(v))v.forEach(f);else if(v)o.push(v)})(x);return o}
+function stopVoice(){
+  clearTimeout(VO.wd);
+  const ab=VO.abort;VO.abort=null;
+  VO.els.forEach(a=>{a.onended=a.onerror=null;try{a.pause()}catch(e){}});
+  if(hasTTS){try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel()}catch(e){}}
+  if(ab)ab();
 }
 let spTok=0;
-function stopSpeech(){spTok++;if(hasTTS){try{speechSynthesis.cancel()}catch(e){}}}
+function stopSpeech(){spTok++;stopVoice()}
+/* speak(['n47','find_t']) — plays clips in order; resolves when finished or interrupted */
 function speak(items){
-  const tok=++spTok;
-  if(!hasTTS)return Promise.resolve();
-  let wasBusy=false;
-  try{wasBusy=speechSynthesis.speaking||speechSynthesis.pending;if(wasBusy)speechSynthesis.cancel()}catch(e){}
-  if(!S.voice)return Promise.resolve();
-  const pv=pickVoice();if(!pv)return Promise.resolve();
-  const list=[].concat(items).filter(Boolean);
+  const tok=++spTok;stopVoice();
+  const keys=flat([items]);
+  if(!S.voice||!keys.length)return Promise.resolve();
   return new Promise(res=>{
     let i=0;
     const next=()=>{
-      if(tok!==spTok||i>=list.length)return res();
-      let t=list[i++];if(pv.mode==='tr')t=trify(t);
-      let done=false,wd=0;
-      const fin=()=>{if(done)return;done=true;clearTimeout(wd);next()};
-      try{
-        const u=new SpeechSynthesisUtterance(t);
-        if(pv.v){u.voice=pv.v;u.lang=pv.v.lang}else u.lang=LANGTAG[S.lang];
-        u.rate=.9;u.pitch=1.15;u.onend=fin;u.onerror=fin;
-        wd=setTimeout(fin,1800+t.length*110);
-        speechSynthesis.speak(u);
-      }catch(e){fin()}
+      if(tok!==spTok||i>=keys.length)return res();
+      const k=keys[i++];
+      if(hasClip(k))playClip(k,keys[i],tok,next);
+      else{const e=PACK[S.lang]&&PACK[S.lang][k];ttsSay(e?e[0]:'',next)}
     };
-    if(wasBusy)setTimeout(next,60);else next();   /* Chrome: give cancel() a moment */
+    next();
   });
 }
-function voiceNote(){
-  const u=UI[S.lang];let s='';
-  if(!hasTTS)s=u.vNone;
-  else if(voices.length){const pv=pickVoice();if(!pv)s=u.vNone;else if(pv.mode==='tr')s=u.vTr}
-  const vn=$('vnote');if(vn)vn.innerHTML=s?'<span>🔇 '+s+'</span>':'';
-  const pi=$('pVoiceInfo');
-  if(pi){const pv=hasTTS&&voices.length?pickVoice():null;pi.textContent=s?('🔇 '+s):(pv&&pv.v?'🔊 '+u.vOk+pv.v.name+' ('+pv.v.lang+')':'')}
+function playClip(k,nextKey,tok,done){
+  const l=S.lang,a=VO.els[VO.cur],b=VO.els[1-VO.cur],url=clipUrl(k),ms=PACK[l][k][1]||1500;
+  let fin=false;
+  const end=(ok)=>{
+    if(fin)return;fin=true;clearTimeout(VO.wd);VO.abort=null;a.onended=a.onerror=null;
+    if(tok!==spTok)return done();
+    if(ok===false){VO.failed[l+'/'+k]=1;return ttsSay(PACK[l][k][0],done)}
+    if(ok===null){try{a.pause()}catch(e){}}
+    VO.cur=1-VO.cur;setTimeout(done,35);
+  };
+  VO.abort=()=>{if(!fin){fin=true;clearTimeout(VO.wd);a.onended=a.onerror=null;done()}};
+  if(a._k!==url){a.src=url;a._k=url}
+  try{a.currentTime=0}catch(e){}
+  a.onended=()=>end(true);a.onerror=()=>end(false);
+  let p;try{p=a.play()}catch(e){end(false);return}
+  if(p&&p.catch)p.catch(err=>{
+    const n=err&&err.name;
+    if(n==='AbortError')return;                     /* interrupted by a newer sentence */
+    if(n==='NotAllowedError'){end(null);return}       /* not unlocked yet: skip quietly */
+    end(false);
+  });
+  VO.wd=setTimeout(()=>end(null),ms+4000);
+  if(nextKey&&hasClip(nextKey,l)){const u=clipUrl(nextKey,l);if(b._k!==u){b.src=u;b._k=u;try{b.load()}catch(e){}}}
 }
 
 /* ================= confetti ================= */
@@ -785,8 +895,16 @@ function tenFrame(id,filled=0,cls=''){
   let h='';for(let i=0;i<10;i++)h+=`<i class="${i<filled?'on':''}"></i>`;
   return `<div class="tf ${cls}" ${id?`id="${id}"`:''}>${h}</div>`;
 }
-function choicesHTML(list){return `<div class="choices">${list.map(n=>`<button class="ch" data-n="${n}" style="--c:${col(n)}" aria-label="${n}">${n}</button>`).join('')}</div>`}
+function choicesHTML(list){return `<div class="choices">${list.map(n=>`<button class="ch${n>=100?' d3':''}" data-n="${n}" style="--c:${col(n)}" aria-label="${n}">${n}</button>`).join('')}</div>`}
 /* answer options: the right one + nearest neighbours inside [lo,hi] */
+/* place-value distractors for 2-digit numbers: swapped digits, ±10, ±1 */
+function pvOpts(n,k,lo,hi){
+  const t=Math.floor(n/10),o=n%10;
+  const c=(o&&o!==t&&t<10?[o*10+t]:[]).concat(shuffle([n+10,n-10]),shuffle([n+1,n-1]),shuffle([n+11,n-11,n+9,n-9]));
+  const out=[n];for(const v of c){if(out.length>=k)break;if(v>=lo&&v<=hi&&out.indexOf(v)<0)out.push(v)}
+  for(let v=lo;out.length<k&&v<=hi;v++)if(out.indexOf(v)<0)out.push(v);
+  return shuffle(out);
+}
 function opts(ans,lo,hi,k=3){
   const near=[];for(let d=1;d<=4;d++){if(ans-d>=lo)near.push(ans-d);if(ans+d<=hi)near.push(ans+d)}
   const out=[ans];for(const v of shuffle(near.slice(0,Math.max(4,k+1)))){if(out.length>=k)break;out.push(v)}
@@ -882,10 +1000,15 @@ function deck(lo,hi){
 function makePlan(st){
   const R=range(0,ROUNDS-1);
   switch(st.m){
-    case 'train':return R.map(i=>{const s=ri(0,6);const seq=range(s,s+4);if(i>=3)seq.reverse();return{seq,mi:i<2?ri(1,3):ri(0,4)}});
+    case 'train':if(st.big)return R.map(i=>{
+        if(i>=3){const t0=ri(1,6),seq=range(t0,t0+4).map(x=>x*10),mi=ri(0,4),ans=seq[mi];   /* count by tens */
+          return{seq,mi,ch:shuffle([ans].concat(shuffle([ans-10,ans+10,ans-20,ans+20].filter(v=>v>=0&&v<=100)).slice(0,2)))}}
+        const s=ri(20,95),seq=range(s,s+4),mi=i===0?ri(1,3):ri(0,4);return{seq,mi,ch:pvOpts(seq[mi],3,10,100)}});
+      return R.map(i=>{const s=ri(0,6);const seq=range(s,s+4);if(i>=3)seq.reverse();return{seq,mi:i<2?ri(1,3):ri(0,4)}});
     case 'compare':return ['more','fewer','more','bigger','smaller'].map((type,i)=>{let a,b;const md=i<2?3:1;do{a=ri(1,10);b=ri(1,10)}while(Math.abs(a-b)<md);return{type,a,b}});
     case 'add':return R.map(i=>{const s=ri(2,i<2?5:10);const a=ri(1,s-1);return{a,b:s-a}});
     case 'sub':return R.map(i=>{const a=i<2?ri(2,5):ri(4,10);const b=(i===4&&Math.random()<.35)?a:ri(1,a-1);return{a,b}});
+    case 'place':{const out=[];while(out.length<ROUNDS){const v=ri(st.lo,st.hi);if(v%10&&out.indexOf(v)<0)out.push(v)}return out}
     default:return deck(st.lo,st.hi);
   }
 }
@@ -908,15 +1031,15 @@ function nextRound(){S.round++;if(S.round>=ROUNDS)finishStage();else startRound(
 function win(lines,extra=0,txt=''){
   S.lock=true;const tok=S.tok;
   sfx.win();S.base='happy';mood('happy');danceZ();confetti(70);
-  const pr=rnd(PH().praise);setBubble(txt?txt+' '+pr:pr);
-  const sp=speak([].concat(lines||[],pr));
+  const pi=Math.floor(Math.random()*PH().praise.length),pr=PH().praise[pi];setBubble(txt?txt+' '+pr:pr);
+  const sp=speak([].concat(lines||[],'praise_'+pi));
   Promise.all([Promise.race([sp,wait(8000)]),wait(1500+extra)]).then(()=>{if(alive(tok))nextRound()});
 }
 const TRY={};   /* placeholder inside oops() lines: "try again" phrase */
 function oops(el,lines){
   S.mist++;S.cool=Date.now()+650;
   sfx.boing();mood('oh',900);shakeEl(el);
-  const t=rnd(PH().tryA);setBubble(t);
+  const ti=Math.floor(Math.random()*PH().tryA.length),t='try_'+ti;setBubble(PH().tryA[ti]);
   speak(lines&&lines.length?lines.map(x=>x===TRY?t:x):[t]);
 }
 function finishStage(){
@@ -930,7 +1053,7 @@ function finishStage(){
   const tok=S.tok;
   sp.slice(0,stars).forEach((s,i)=>setTimeout(()=>{if(!alive(tok))return;s.classList.add('on');sfx.star(i)},450+i*450));
   setTimeout(()=>{if(alive(tok))confetti(140)},450+stars*450);
-  speak(PH().stars[stars]);
+  speak('stars_'+stars);
   if(S.kbd)setTimeout(()=>{if(alive(tok))$(S.si<STAGES.length-1?'wNext':'wAgain').focus()},50);
 }
 
@@ -948,20 +1071,20 @@ MECH.feed=(st,n,tok)=>{
       ${auto?'':`<button class="okb" id="okb" aria-label="OK">✔</button>`}</div></div>`;
   const zhit=$('zhit'),cells=$('tf').children;
   let cnt=0,gen=0;
-  const land=(k,g)=>{if(!alive(tok)||g!==gen)return;if(cells[k-1])cells[k-1].classList.add('on');chomp();speak(word(k));floatNum(zhit,k)};
+  const land=(k,g)=>{if(!alive(tok)||g!==gen)return;if(cells[k-1])cells[k-1].classList.add('on');chomp();speak(NK(k));floatNum(zhit,k)};
   const feedOne=(f,dropped)=>{
     if(S.lock||f.disabled)return;
     const g=gen;const p=dropped?Promise.resolve():flyTo(f,zhit,{fy:.6,scale:.45});
     f.disabled=true;f.classList.add('gone');cnt++;const k=cnt;
     p.then(()=>land(k,g));
-    if(auto&&cnt===n){S.lock=true;p.then(()=>wait(650)).then(()=>{if(alive(tok))win([word(n)])})}
+    if(auto&&cnt===n){S.lock=true;p.then(()=>wait(650)).then(()=>{if(alive(tok))win([NK(n)])})}
   };
   field.querySelectorAll('.food').forEach(f=>{onTap(f,()=>feedOne(f,false));dragify(f,()=>zhit,()=>feedOne(f,true))});
   if(!auto){
     const okb=$('okb');
     okb.onclick=()=>{
       if(busy())return;
-      if(cnt===n)win([word(n)]);
+      if(cnt===n)win([NK(n)]);
       else if(cnt<n)oops(okb,[L('few').s,L('feed',n).s]);
       else{
         oops(okb,[L('many').s,L('feed',n).s]);
@@ -976,7 +1099,7 @@ MECH.feed=(st,n,tok)=>{
 
 /* 2) Balloons: pop the balloon with the spoken numeral */
 MECH.balloon=(st,n,tok)=>{
-  const k=st.k,vals=opts(n,st.lo,st.hi,k),cols=isLand()?k:Math.min(k,3),rows=Math.ceil(k/cols);
+  const k=st.k,vals=st.pv?pvOpts(n,k,st.lo,st.hi):opts(n,st.lo,st.hi,k),cols=isLand()?k:Math.min(k,3),rows=Math.ceil(k/cols);
   const html=vals.map((v,i)=>{
     const r=Math.floor(i/cols),inRow=r<rows-1?cols:k-cols*(rows-1),c=i%cols;
     const x=(c+.5)/inRow*100,y=(r+.5)/rows*100+(Math.random()-.5)*(rows>1?6:16);
@@ -990,8 +1113,8 @@ MECH.balloon=(st,n,tok)=>{
     if(v===n){
       const r=b.getBoundingClientRect();sfx.pop();confetti(30,r.left+r.width/2,r.top+r.height*.35);
       b.classList.add('pop');field.querySelectorAll('.bl').forEach(o=>{if(o!==b)o.classList.add('away')});
-      win([word(n)],300);
-    }else{b.disabled=true;oops(b,[word(v),L('find',n).s])}
+      win([NK(n)],300);
+    }else{b.disabled=true;oops(b,[NK(v),L('find',n).s])}
   }));
   say(L('find',n));
 };
@@ -1005,16 +1128,16 @@ MECH.count=(st,n,tok)=>{
   let c=0;
   field.querySelectorAll('.crit').forEach(b=>onTap(b,()=>{
     if(S.lock)return;
-    if(!b.dataset.k){c++;b.dataset.k=c;b.querySelector('i').textContent=c;restart(b,'counted');sfx.tap(c);speak(word(c))}
-    else{restart(b.querySelector('.in'),'shake');speak(word(+b.dataset.k))}
+    if(!b.dataset.k){c++;b.dataset.k=c;b.querySelector('i').textContent=c;restart(b,'counted');sfx.tap(c);speak(NK(c))}
+    else{restart(b.querySelector('.in'),'shake');speak(NK(+b.dataset.k))}
   }));
-  bindChoices(n,()=>{$('mdw').classList.add('hopall');win([word(n)])});
+  bindChoices(n,()=>{$('mdw').classList.add('hopall');win([NK(n)])});
   say(L('count'));
 };
 function bindChoices(ans,ok){
   field.querySelectorAll('.ch').forEach(b=>onTap(b,()=>{
     if(busy()||b.disabled)return;const v=+b.dataset.n;
-    if(v===ans){b.classList.add('yes');ok(b)}else{b.disabled=true;oops(b,[word(v),TRY])}
+    if(v===ans){b.classList.add('yes');ok(b)}else{b.disabled=true;oops(b,[NK(v),TRY])}
   }));
 }
 
@@ -1027,7 +1150,7 @@ MECH.match=(st,n,tok)=>{
       groupPos(v).map(p=>`<span style="left:${p.x}%;top:${p.y}%">${em}</span>`).join('')}</button>`).join('')}</div></div></div>`;
   field.querySelectorAll('.card').forEach(b=>onTap(b,()=>{
     if(busy()||b.disabled)return;const v=+b.dataset.n;
-    if(v===n){b.classList.add('yes');win([word(n)])}else{b.disabled=true;oops(b,[L('match',n).s])}
+    if(v===n){b.classList.add('yes');win([NK(n)])}else{b.disabled=true;oops(b,[L('match',n).s])}
   }));
   $('sign').onclick=repeat;
   say(L('match',n));
@@ -1046,17 +1169,17 @@ MECH.tower=(st,n,tok)=>{
     if(h>=11){sfx.boing();restart(tower,'wob');return}
     h++;const b=document.createElement('button');b.className='blk drop';b.style.setProperty('--c',col(h));b.textContent=h;b.setAttribute('aria-label',String(h));
     b.onclick=()=>{if(b===tower.lastElementChild)removeTop()};
-    tower.appendChild(b);sfx.plop();speak(word(h));
+    tower.appendChild(b);sfx.plop();speak(NK(h));
   };
   const removeTop=()=>{
     if(S.lock||!h)return;
-    tower.lastElementChild.remove();h--;sfx.click();speak(word(h));
+    tower.lastElementChild.remove();h--;sfx.click();speak(NK(h));
   };
   const pile=$('pile');onTap(pile,add);dragify(pile,()=>twC,add);
   $('minus').onclick=removeTop;
   okb.onclick=()=>{
     if(busy())return;
-    if(h===n){restart(tower,'wave');win([word(n)])}
+    if(h===n){restart(tower,'wave');win([NK(n)])}
     else if(h<n)oops(okb,[L('low').s,L('tower',n).s]);
     else{oops(okb,[L('high').s]);restart(tower,'wob')}
   };
@@ -1070,22 +1193,22 @@ const ENGINE=`<svg viewBox="0 0 130 104"><rect x="66" y="8" width="54" height="6
   <circle cx="30" cy="84" r="15" fill="#3d3350" stroke="#9a8fb0" stroke-width="4"/><circle cx="94" cy="84" r="15" fill="#3d3350" stroke="#9a8fb0" stroke-width="4"/>
   <rect x="0" y="60" width="10" height="10" rx="3" fill="#ffc928"/></svg>`;
 MECH.train=(st,p,tok)=>{
-  const ans=p.seq[p.mi],choices=opts(ans,st.lo,st.hi,3);
+  const ans=p.seq[p.mi],choices=p.ch||opts(ans,st.lo,st.hi,3),dc=v=>'d'+String(v).length;
   field.innerHTML=`<div class="trn">
     <div class="trk"><div class="train" id="train">${p.seq.map((v,i)=>i===p.mi
       ?`<div class="car gap" id="gap"><b>?</b></div>`
-      :`<div class="car" style="--c:${col(v)}"><b>${v}</b></div>`).join('')}<div class="eng">${ENGINE}</div></div><div class="rail"></div></div>
-    <div class="choices">${choices.map(v=>`<button class="ch nb" data-n="${v}" style="--c:${col(v)}" aria-label="${v}">${v}</button>`).join('')}</div></div>`;
+      :`<div class="car" style="--c:${col(v)}"><b class="${dc(v)}">${v}</b></div>`).join('')}<div class="eng">${ENGINE}</div></div><div class="rail"></div></div>
+    <div class="choices">${choices.map(v=>`<button class="ch nb${v>=100?' d3':''}" data-n="${v}" style="--c:${col(v)}" aria-label="${v}">${v}</button>`).join('')}</div></div>`;
   const gap=$('gap');
   const tryIt=(b)=>{
     if(busy()||b.disabled)return;const v=+b.dataset.n;
     if(v===ans){
-      S.lock=true;b.style.visibility='hidden';gap.className='car';gap.style.setProperty('--c',col(v));gap.innerHTML=`<b>${v}</b>`;restart(gap,'hop');sfx.plop();
+      S.lock=true;b.style.visibility='hidden';gap.className='car';gap.style.setProperty('--c',col(v));gap.innerHTML=`<b class="${dc(v)}">${v}</b>`;restart(gap,'hop');sfx.plop();
       const cars=[...field.querySelectorAll('.car')];
       cars.forEach((c,i)=>setTimeout(()=>{if(alive(tok)){restart(c,'hop');sfx.tap(i)}},500+i*520));
       setTimeout(()=>{if(alive(tok)){sfx.whistle();$('train').classList.add('go')}},500+cars.length*520+200);
-      win([p.seq.map(word).join(', ')],cars.length*520+900);
-    }else{b.disabled=true;oops(b,[word(v),L('train').s])}
+      win([p.seq.map(NK)],cars.length*520+900);
+    }else{b.disabled=true;oops(b,[NK(v),L('train').s])}
   };
   field.querySelectorAll('.nb').forEach(b=>{onTap(b,()=>tryIt(b));dragify(b,()=>gap,()=>tryIt(b))});
   say(L('train'));
@@ -1124,9 +1247,9 @@ MECH.add=(st,p,tok)=>{
     const aps=[...field.querySelectorAll('.ap')],sls=field.querySelectorAll('#basket .sl');
     for(let i=0;i<b;i++){
       if(!alive(tok))return;
-      const ap=aps[i],sl=sls[a+i],pr=flyTo(ap,sl,{dur:560,arc:-20,scale:1});ap.style.visibility='hidden';
+      const ap=aps[i],sl=sls[a+i],pr=flyTo(ap,sl,{dur:b>5?400:560,arc:-20,scale:1});ap.style.visibility='hidden';
       await pr;if(!alive(tok))return;
-      sl.textContent='🍏';restart(sl,'in');sfx.plop();await wait(140);
+      sl.textContent='🍏';restart(sl,'in');sfx.plop();await wait(b>5?60:140);
     }
     if(!alive(tok))return;
     S.lock=false;speak(S.last.s);focusFirst();
@@ -1147,9 +1270,9 @@ MECH.sub=(st,p,tok)=>{
     const sls=field.querySelectorAll('#p10 .sl'),zhit=$('zhit');
     for(let i=0;i<b;i++){
       if(!alive(tok))return;
-      const sl=sls[a-1-i],pr=flyTo(sl,zhit,{dur:480,fy:.6,scale:.4,html:'🍪'});sl.classList.add('eaten');
+      const sl=sls[a-1-i],pr=flyTo(sl,zhit,{dur:b>5?340:480,fy:.6,scale:.4,html:'🍪'});sl.classList.add('eaten');
       await pr;if(!alive(tok))return;
-      chomp();await wait(260);
+      chomp();await wait(b>5?120:260);
     }
     if(!alive(tok))return;
     S.lock=false;speak(S.last.s);focusFirst();
@@ -1167,27 +1290,62 @@ MECH.tens=(st,n,tok)=>{
   let c=0;
   field.querySelectorAll('button.egg').forEach(b=>onTap(b,()=>{
     if(S.lock)return;
-    if(!b.dataset.k){c++;b.dataset.k=c;b.querySelector('i').textContent=c;restart(b,'counted');sfx.tap(c);speak(word(c))}
-    else speak(word(+b.dataset.k));
+    if(!b.dataset.k){c++;b.dataset.k=c;b.querySelector('i').textContent=c;restart(b,'counted');sfx.tap(c);speak(NK(c))}
+    else speak(NK(+b.dataset.k));
   }));
   bindChoices(n,()=>{$('tag2').classList.remove('hid');const l=L('tensOk',k,n);win([l.s],0,l.t)});
   say(L('eggs'));
 };
 
-/* ================= explore 0–20 ================= */
+/* 11) Tens and ones: count rods of ten and single cubes (21–99) */
+MECH.place=(st,n,tok)=>{
+  const t=Math.floor(n/10),o=n%10;
+  field.innerHTML=`<div class="duo place"><div class="pa"><div class="pv">${range(1,t).map(()=>`<button class="rod rb" aria-label="10">${'<b></b>'.repeat(10)}<i></i></button>`).join('')}
+      <div class="ubox">${range(1,o).map(()=>`<button class="ub" aria-label="1"><b></b><i></i></button>`).join('')}</div></div></div>
+    <div class="pb">${choicesHTML(pvOpts(n,3,10,99))}</div></div>`;
+  let c=0;
+  field.querySelectorAll('.rb,.ub').forEach(b=>onTap(b,()=>{
+    if(S.lock)return;
+    if(!b.dataset.k){c+=b.classList.contains('rb')?10:1;b.dataset.k=c;b.querySelector('i').textContent=c;restart(b,'counted');sfx.tap(c);speak(NK(c))}
+    else speak(NK(+b.dataset.k));
+  }));
+  bindChoices(n,()=>{const l=L('placeOk',t,o,n);win([l.s],0,l.t)});
+  say(L('cubes'));
+};
+
+/* ================= explore 0–100 ================= */
+function digitsHTML(n){
+  if(n>=100)return `<span class="dH">${n}</span>`;
+  const d=String(n);return d.length===2?`<span class="dT">${d[0]}</span><span class="dO">${d[1]}</span>`:`<span class="dO">${d}</span>`;
+}
+function pvHTML(n){
+  const t=Math.floor(n/10),o=n%10;
+  return `<div class="pv">${range(1,t).map(()=>`<i class="rod">${'<b></b>'.repeat(10)}</i>`).join('')}${o?`<i class="units">${'<b></b>'.repeat(o)}</i>`:''}</div>`;
+}
 function renderExplore(n,talk){
-  S.exN=n;
-  $('exShow').innerHTML=`<div id="exZ">${zuzu('happy'+(talk?' dance':''))}</div><div class="exNum" style="color:${col(n)}">${n}</div>
-    <div class="exInfo"><div class="exWord">${word(n)}</div><div class="exTfs">${tenFrame('',Math.min(n,10))}${n>10?tenFrame('',n-10,'b'):''}</div></div>`;
+  n=Math.max(0,Math.min(S.exR,n));S.exN=n;
+  const t=Math.floor(n/10),o=n%10;
+  $('exShow').classList.toggle('big',n>=10);
+  $('exShow').innerHTML=`<div id="exZ">${zuzu('happy'+(talk?' dance':''))}</div><div class="exNum">${digitsHTML(n)}</div>
+    <div class="exInfo"><div class="exTxt"><div class="exWord">${word(n)}</div>${n>=10?`<div class="pvcap">${PH().pv(t,o)}</div>`:''}</div>${n?pvHTML(n):''}</div>`;
   document.querySelectorAll('.pad').forEach(b=>b.classList.toggle('sel',+b.dataset.n===n));
-  if(talk){sfx.tap(n);speak(word(n))}
+  $('exM10').disabled=$('exM1').disabled=n<=0;$('exP10').disabled=$('exP1').disabled=n>=S.exR;
+  if(talk){sfx.tap(n);speak([NK(n)].concat(placeKeys(n)))}
+}
+function renderPad(){
+  const R=S.exR,list=R<=20?range(0,R):range(0,R/10).map(x=>x*10);
+  $('exPad').innerHTML=list.map(n=>`<button class="pad" data-n="${n}" style="--c:${col(n)}" aria-label="${n}">${n}</button>`).join('');
+  $('exPad').querySelectorAll('.pad').forEach(b=>b.onclick=()=>renderExplore(+b.dataset.n,true));
+  document.querySelectorAll('#exRange button').forEach(b=>b.classList.toggle('on',+b.dataset.r===R));
 }
 function openExplore(){
-  $('exPad').innerHTML=range(0,20).map(n=>`<button class="pad" data-n="${n}" style="--c:${col(n)}" aria-label="${n}">${n}</button>`).join('');
-  $('exPad').querySelectorAll('.pad').forEach(b=>b.onclick=()=>renderExplore(+b.dataset.n,true));
-  show('explore');renderExplore(S.exN,false);
-  if(S.kbd){const b=$('exPad').querySelector('.pad.sel');if(b)b.focus()}
+  show('explore');renderPad();renderExplore(S.exN,false);
+  if(S.kbd){const b=$('exPad').querySelector('.pad.sel')||$('exP1');if(b)b.focus()}
 }
+document.querySelectorAll('#exRange button').forEach(b=>b.onclick=()=>{
+  S.exR=+b.dataset.r;store.set('reqem-exrange',S.exR);sfx.click();renderPad();renderExplore(S.exN,false);
+});
+[['exM10',-10],['exM1',-1],['exP1',1],['exP10',10]].forEach(([id,d])=>$(id).onclick=()=>renderExplore(S.exN+d,true));
 
 /* ================= screens ================= */
 function show(id){
@@ -1200,7 +1358,7 @@ function goHome(){stopSpeech();closeOverlays();show('home');if(S.kbd)$('bPlay').
 function goMap(){
   stopSpeech();closeOverlays();show('map');
   let tot=0,next=-1;
-  $('stages').innerHTML=`<button class="stg ex" id="exBtn" data-ta="explore"><span class="si">🔢</span><small>0–20</small><span class="ss">&nbsp;</span></button>`+
+  $('stages').innerHTML=`<button class="stg ex" id="exBtn" data-ta="explore"><span class="si">🔢</span><small>0–100</small><span class="ss">&nbsp;</span></button>`+
     STAGES.map((s,i)=>{const st=prog.st[s.id]||0,open=unlocked(i);tot+=st;if(open&&!st&&next<0)next=i;
       return `<button class="stg ${open?'':'lock'}" data-i="${i}" style="--c:${SCOL[i]}" aria-label="${i+1}"><span class="sn">${i+1}</span><span class="si">${s.icon}</span><small>${s.cap}</small>
         <span class="ss">${'★'.repeat(st)}${'☆'.repeat(3-st)}</span>${open?'':'<span class="lk">🔒</span>'}</button>`}).join('');
@@ -1229,13 +1387,13 @@ function applyLang(l){
   document.querySelectorAll('.langs button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
   document.title=u.docTitle;
   try{localStorage.setItem('l2r2-lang',l)}catch(e){}   /* shared with the L2R2 hub page */
-  voiceNote();
+  warmClips();
 }
-document.querySelectorAll('.langs button').forEach(b=>b.onclick=()=>{applyLang(b.dataset.lang);sfx.click();speak(PH().hello)});
+document.querySelectorAll('.langs button').forEach(b=>b.onclick=()=>{applyLang(b.dataset.lang);sfx.click();speak('hello')});
 
 /* ================= wiring ================= */
 $('homeZ').innerHTML=zuzu('happy');
-$('homeZ').onclick=()=>{const z=$('homeZ').firstElementChild;restart(z,'dance');sfx.giggle();speak(PH().hello)};
+$('homeZ').onclick=()=>{const z=$('homeZ').firstElementChild;restart(z,'dance');sfx.giggle();speak('hello')};
 $('bPlay').onclick=()=>{sfx.click();goMap()};
 $('mapHome').onclick=goHome;
 $('playBack').onclick=goMap;
@@ -1246,7 +1404,7 @@ $('exSay').onclick=()=>renderExplore(S.exN,true);
 field.addEventListener('click',e=>{
   const z=e.target.closest('.zz');if(!z||S.lock)return;
   restart(z,'bite');sfx.giggle();
-  if(S.last){setBubble(S.last.t);speak([PH().giggle,S.last.s])}
+  if(S.last){setBubble(S.last.t);speak(['giggle',S.last.s])}
 });
 $('wMap').onclick=goMap;
 $('wAgain').onclick=()=>startStage(S.si);
@@ -1256,10 +1414,10 @@ $('wNext').onclick=()=>{if(S.si<STAGES.length-1)startStage(S.si+1);else goMap()}
 function syncToggles(){
   $('tVoice').setAttribute('aria-pressed',String(S.voice));$('tSfx').setAttribute('aria-pressed',String(S.sfx));$('tAll').setAttribute('aria-pressed',String(!!prog.all));
 }
-$('bParent').onclick=()=>{syncToggles();voiceNote();$('parent').classList.add('on');if(S.kbd)$('pClose').focus()};
+$('bParent').onclick=()=>{syncToggles();$('parent').classList.add('on');if(S.kbd)$('pClose').focus()};
 $('pClose').onclick=()=>$('parent').classList.remove('on');
 $('parent').addEventListener('click',e=>{if(e.target.id==='parent')$('parent').classList.remove('on')});
-$('tVoice').onclick=()=>{S.voice=!S.voice;store.set('reqem-voice',S.voice);syncToggles();if(S.voice)speak(PH().hello);else stopSpeech()};
+$('tVoice').onclick=()=>{S.voice=!S.voice;store.set('reqem-voice',S.voice);syncToggles();if(S.voice)speak('hello');else stopSpeech()};
 $('tSfx').onclick=()=>{S.sfx=!S.sfx;store.set('reqem-sfx',S.sfx);syncToggles();sfx.click()};
 $('tAll').onclick=()=>{prog.all=!prog.all;saveProg();syncToggles()};
 let resetArm=0;
@@ -1296,7 +1454,7 @@ function goBack(){
   if(S.scr==='map')goHome();
 }
 addEventListener('keydown',e=>{
-  S.kbd=true;ac();
+  S.kbd=true;
   const k=e.key;
   if(k&&k.indexOf('Arrow')===0){e.preventDefault();navMove(k);return}
   if(k==='Escape'||k==='Backspace'||k==='GoBack'||k==='BrowserBack'||e.keyCode===461||e.keyCode===10009){e.preventDefault();goBack();return}
@@ -1306,11 +1464,8 @@ addEventListener('keydown',e=>{
     if(b){e.preventDefault();b.focus();b.click()}
   }
 });
-let ttsWarm=false;
-addEventListener('pointerdown',()=>{
-  S.kbd=false;ac();
-  if(!ttsWarm&&hasTTS){ttsWarm=true;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}  /* iOS: unlock speech on first touch */
-},true);
+addEventListener('pointerdown',()=>{S.kbd=false},true);
+['touchend','click','keydown'].forEach(ev=>addEventListener(ev,()=>{ac();unlockVoice()},true));
 addEventListener('resize',()=>{resize();if(dragCancel)dragCancel()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech()});
 window.onerror=function(msg,src,line){const n=$('vnote');if(n)n.innerHTML='<span>⚠ '+String(msg).replace(/</g,'&lt;')+' ('+line+')</span>'};
@@ -1318,6 +1473,7 @@ window.onerror=function(msg,src,line){const n=$('vnote');if(n)n.innerHTML='<span
 resize();
 applyLang(S.lang);
 setTimeout(loadVoices,1200);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&actx&&actx.state!=='running'){try{actx.resume()}catch(e){}}});
 </script>
 </body>
 </html>
