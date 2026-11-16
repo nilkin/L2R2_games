@@ -1,6 +1,6 @@
 # 🎮 L2R2 Oyunlar
 
-Uşaqlar üçün pulsuz brauzer oyunları — hamısı bir yerdə.
+Uşaqlar üçün brauzer oyunları — hamısı bir yerdə.
 
 ▶️ **Oyna:** https://nilkin.github.io/L2R2_games/
 
