@@ -13,13 +13,16 @@
 - Maneənin üstünə yuxarıdan düşmək təhlükəsizdir
 - **Dillər:** Azərbaycan, Русский, English
 - **Sürət:** Yavaş / Orta / Sürətli
+- **Öz şəklin:** menyuda 📷 düyməsi ilə şəkil seçmək olar. Şəkildə baş (saç və üz) öz konturu ilə fonsuz kəsilir və bütün mərhələlərdə qəhrəmanın başı olur: qəhrəmanın kostyumu, qulaqları, papağı, bığcıqları qalır (qurbağanın gözləri isə örtülür), astronavtda üz dəbilqənin içində, robotda ekranda görünür. Günəş mərhələsində isə ayrıca animasiyalı personaj var. Üz hərəkət edir: göz qırpır, atlayanda çənəsi aşağı düşüb ağzı açılır, maneəyə dəyəndə gözlərini yumur. Kəsmə üçün brauzerin içində MediaPipe istifadə olunur (ilk dəfə ~30 MB model yüklənir). Üz tapılmasa və ya köhnə brauzerdə şəkil sadəcə yumru kəsilir. Personaj: iri yellənən baş, günəş şüaları, uçuşan plaş, havada qəhrəman pozası. Şəkil seçilməyibsə, bütün qəhrəmanlar olduğu kimi qalır. Şəkli ✕ düyməsi ilə silmək olar. Şəkil yalnız bu brauzerdə saxlanılır və heç yerə göndərilmir.
 
 ## İdarəetmə
-| Cihaz | Atlamaq |
-|---|---|
-| Telefon / planşet | Ekrana toxun |
-| Kompüter | Boşluq, ↑ və ya W |
-| TV pultu | OK (Enter) |
+| Cihaz | Atlamaq | Pauza |
+|---|---|---|
+| Telefon / planşet | Ekrana toxun | ❚❚ düyməsi (sağ yuxarı küncdə) |
+| Kompüter | Boşluq, ↑ və ya W | P və ya Esc |
+| TV pultu | OK (Enter) | Pause / Play düyməsi |
+
+Pauzada ekrana toxunmaq və ya OK basmaq oyunu davam etdirir. Başqa tab-a və ya proqrama keçəndə oyun avtomatik dayanır.
 
 Menyuda ← → sürəti, ↓ dili dəyişir.
 
@@ -28,10 +31,20 @@ Menyuda ← → sürəti, ↓ dili dəyişir.
 
 **Lokal:** heç bir quraşdırma tələb olunmur, `index.html` faylını brauzerdə açın.
 
+### Kodu dəyişmək
+Oyunun mənbə kodu `src/index.html`-dədir. Kökdəki `index.html` ondan avtomatik yaradılır, onu birbaşa redaktə etməyin. Dəyişiklikdən sonra:
+
+```bash
+npm install      # yalnız ilk dəfə
+npm run build    # src/index.html → index.html
+```
+
+Build skripti (`build.js`) oyun kodunu Babel ilə ES5-ə çevirir ki, köhnə brauzerlərdə, məsələn köhnə LG webOS televizorlarında da işləsin. Sonra çıxışın həqiqətən ES5 olduğunu yoxlayır. Hər iki `index.html` faylını birlikdə commit edin.
+
 ### GitHub Pages
 Sayt `main` branch-ının kök qovluğundan (`/ (root)`) avtomatik yayımlanır (**Settings → Pages**). `main`-ə edilən hər push bir neçə dəqiqə ərzində sayta düşür.
 
 ## Texniki məlumat
-Tək bir `index.html` faylıdır: HTML5 Canvas və saf JavaScript ilə yazılıb, heç bir kitabxana və ya xarici fayldan asılı deyil. Bütün qrafika kodla çəkilir, səslər Web Audio API ilə yaradılır.
+Oyun tək bir `index.html` faylıdır: HTML5 Canvas və saf JavaScript ilə yazılıb, işləmək üçün heç bir kitabxana və ya xarici fayl lazım deyil (Babel yalnız build zamanı istifadə olunur). Köhnə brauzerlər üçün `ctx.ellipse`, pointer event-lər, `e.key`, köhnə Web Audio API və s. üçün ehtiyat variantlar var. Bütün qrafika kodla çəkilir, səslər Web Audio API ilə yaradılır.
 
 `jumping-friends_reels.mp4` oyunun Instagram Reels üçün 31 saniyəlik reklam videosudur.
