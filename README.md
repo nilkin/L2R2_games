@@ -24,8 +24,9 @@ jumping-friends/
 3. Bu cədvələ sətir əlavə et, commit + push — bir neçə dəqiqəyə saytda olur.
 
 ## İdeya forması
-`index.html`-in başındakı `FORM_ENDPOINT` boşdursa, ideya hazır doldurulmuş GitHub Issue kimi açılır.
-E-poçtla qəbul etmək üçün [Formspree](https://formspree.io)-də form yarat və ünvanı ora yaz.
+İdeyalar **WhatsApp**-a gəlir: "WhatsApp-a göndər" basılanda WhatsApp ideya mətni hazır yazılmış halda açılır,
+ziyarətçi sadəcə göndər düyməsini basır. Nömrə `index.html`-in başındakı `WHATSAPP_NUMBER`-dədir.
+`WHATSAPP_NUMBER` boşdursa `FORM_ENDPOINT` (məs. [Formspree](https://formspree.io)), o da boşdursa GitHub Issue istifadə olunur.
 
 ## Tarixçə
 `alfa_be` və `jumping-friends` əvvəllər ayrı repolar idi; `git subtree` ilə bütün commit tarixçəsi ilə birləşdirilib.
