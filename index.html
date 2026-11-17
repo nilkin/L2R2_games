@@ -6,7 +6,7 @@
 <title>L2R2 Oyunlar</title>
 <script src="log.js"></script>
 <meta name="description" content="Uşaqlar üçün brauzer oyunları. Oyun ideyanızı göndərin, biz onu sizin üçün hazırlayaq!">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <script>
   /* ===== CONFIG =====
@@ -57,12 +57,8 @@
          background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
          border-radius:20px;padding:8px 10px 8px 14px;box-shadow:0 6px 20px rgba(60,30,90,.10)}
   .logo{font-weight:800;font-size:22px;display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
-  .logo b{display:inline-flex;gap:2px}
-  .logo b span{color:#fff;border-radius:8px;width:24px;height:28px;display:grid;place-items:center;font-size:18px;line-height:1}
-  .logo b span:nth-child(1){background:var(--pink);transform:rotate(-8deg)}
-  .logo b span:nth-child(2){background:var(--yellow);transform:rotate(5deg)}
-  .logo b span:nth-child(3){background:var(--green);transform:rotate(-4deg)}
-  .logo b span:nth-child(4){background:var(--blue);transform:rotate(7deg)}
+  .logo img{width:66px;height:auto;display:block;filter:drop-shadow(0 3px 4px rgba(60,30,90,.18));transition:transform .2s}
+  .logo:hover img{transform:rotate(-6deg) scale(1.06)}
   .langs{display:flex;gap:4px;background:var(--card);border-radius:14px;padding:4px}
   .langs button{border:0;background:none;font:inherit;font-weight:700;font-size:15px;color:var(--muted);padding:2px 10px;border-radius:10px;cursor:pointer}
   .langs button.on{background:var(--purple);color:#fff}
@@ -196,7 +192,7 @@
 <div class="deco" aria-hidden="true"><i class="c" style="left:4%;top:18%;width:26px;height:26px;background:#ff4d8d;animation-delay:-0s"></i><i class="sq" style="left:92%;top:12%;width:22px;height:22px;background:#ffc928;animation-delay:-2s"></i><i class="c" style="left:85%;top:46%;width:16px;height:16px;background:#22c55e;animation-delay:-4s"></i><i class="tri" style="left:8%;top:62%;width:0px;height:0px;background:#3fa2ff;animation-delay:-6s"></i><i class="c" style="left:50%;top:8%;width:12px;height:12px;background:#8e5cf7;animation-delay:-8s"></i><i class="sq" style="left:95%;top:78%;width:18px;height:18px;background:#ff8a3d;animation-delay:-10s"></i><i class="c" style="left:3%;top:88%;width:20px;height:20px;background:#ff4d8d;animation-delay:-12s"></i><i class="c" style="left:60%;top:92%;width:14px;height:14px;background:#ffc928;animation-delay:-14s"></i><i class="sq" style="left:30%;top:40%;width:12px;height:12px;background:#22c55e;animation-delay:-16s"></i><i class="c" style="left:72%;top:28%;width:10px;height:10px;background:#3fa2ff;animation-delay:-18s"></i><i class="st" style="left:11%;top:7%;animation-delay:-0.0s"></i><i class="st" style="left:48%;top:60%;animation-delay:-0.7s"></i><i class="st" style="left:85%;top:13%;animation-delay:-1.4s"></i><i class="st" style="left:22%;top:66%;animation-delay:-2.1s"></i><i class="st" style="left:59%;top:19%;animation-delay:-2.8s"></i><i class="st" style="left:96%;top:72%;animation-delay:-3.5s"></i><i class="st" style="left:33%;top:25%;animation-delay:-4.2s"></i><i class="st" style="left:70%;top:78%;animation-delay:-4.9s"></i><i class="st" style="left:7%;top:31%;animation-delay:-5.6s"></i><i class="st" style="left:44%;top:84%;animation-delay:-6.3s"></i><i class="st" style="left:81%;top:37%;animation-delay:-7.0s"></i><i class="st" style="left:18%;top:90%;animation-delay:-7.7s"></i><i class="st" style="left:55%;top:43%;animation-delay:-8.4s"></i><i class="st" style="left:92%;top:96%;animation-delay:-9.1s"></i><i class="st" style="left:29%;top:49%;animation-delay:-9.8s"></i><i class="st" style="left:66%;top:2%;animation-delay:-10.5s"></i><i class="st" style="left:3%;top:55%;animation-delay:-11.2s"></i><i class="st" style="left:40%;top:8%;animation-delay:-11.9s"></i><i class="st" style="left:77%;top:61%;animation-delay:-12.6s"></i><i class="st" style="left:14%;top:14%;animation-delay:-13.3s"></i><i class="st" style="left:51%;top:67%;animation-delay:-14.0s"></i><i class="st" style="left:88%;top:20%;animation-delay:-14.7s"></i><i class="st" style="left:25%;top:73%;animation-delay:-15.4s"></i><i class="st" style="left:62%;top:26%;animation-delay:-16.1s"></i></div>
 <div class="wrap">
   <header>
-    <a class="logo" href="./"><b><span>L</span><span>2</span><span>R</span><span>2</span></b> <span data-t="brand">Oyunlar</span></a>
+    <a class="logo" href="./"><img src="logo.svg" alt="L2R2" width="66" height="55"> <span data-t="brand">Oyunlar</span></a>
     <div class="langs" role="group" aria-label="Language">
       <button data-lang="az" class="on">AZ</button><button data-lang="ru">RU</button><button data-lang="en">EN</button>
     </div>

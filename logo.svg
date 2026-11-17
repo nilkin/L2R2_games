@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" role="img" aria-label="L2R2">
+  <!-- L2 / R2 çiyin düymələri -->
+  <g font-family="'Baloo 2','Arial Rounded MT Bold',Arial,sans-serif" font-weight="800" font-size="19" text-anchor="middle" fill="#2d2466">
+    <rect x="13" y="7" width="38" height="36" rx="9" fill="#f5b800"/>
+    <rect x="13" y="4" width="38" height="34" rx="9" fill="#ffd43b"/>
+    <text x="32" y="28">L2</text>
+    <rect x="69" y="7" width="38" height="36" rx="9" fill="#f5b800"/>
+    <rect x="69" y="4" width="38" height="34" rx="9" fill="#ffd43b"/>
+    <text x="88" y="28">R2</text>
+  </g>
+  <!-- pult gövdəsi -->
+  <path d="M22 37h76a19 19 0 0 1 19 19v13a21 21 0 0 1-36 15l-6-6H45l-6 6a21 21 0 0 1-36-15V56a19 19 0 0 1 19-19z" fill="#e6e8f6" transform="translate(0 3)"/>
+  <path d="M22 37h76a19 19 0 0 1 19 19v13a21 21 0 0 1-36 15l-6-6H45l-6 6a21 21 0 0 1-36-15V56a19 19 0 0 1 19-19z" fill="#fff" stroke="#dcdff2" stroke-width="1.5"/>
+  <!-- xaç düymə -->
+  <rect x="25" y="49" width="10" height="26" rx="2.5" fill="#7c5cff"/>
+  <rect x="17" y="57" width="26" height="10" rx="2.5" fill="#7c5cff"/>
+  <!-- select / start -->
+  <rect x="49" y="46" width="9" height="3.5" rx="1.75" fill="#c8cbe3"/>
+  <rect x="62" y="46" width="9" height="3.5" rx="1.75" fill="#c8cbe3"/>
+  <!-- çubuqlar -->
+  <circle cx="48" cy="68" r="8" fill="#3a3f6e"/><circle cx="48" cy="67" r="5" fill="#4b5189"/>
+  <circle cx="72" cy="68" r="8" fill="#3a3f6e"/><circle cx="72" cy="67" r="5" fill="#4b5189"/>
+  <!-- rəngli düymələr -->
+  <circle cx="94" cy="52" r="5" fill="#3ddc84"/>
+  <circle cx="85" cy="61" r="5" fill="#ffa62b"/>
+  <circle cx="103" cy="61" r="5" fill="#ff5d8f"/>
+  <circle cx="94" cy="70" r="5" fill="#4cc9f0"/>
+</svg>
