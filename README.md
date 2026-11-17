@@ -33,5 +33,9 @@ logserver/          ← server (Google Apps Script → Google Sheets) və quraş
 ziyarətçi sadəcə göndər düyməsini basır. Nömrə `index.html`-in başındakı `WHATSAPP_NUMBER`-dədir.
 `WHATSAPP_NUMBER` boşdursa `FORM_ENDPOINT` (məs. [Formspree](https://formspree.io)), o da boşdursa GitHub Issue istifadə olunur.
 
+İdeyalar **Instagram**-a da gəlir ([@l2r2play.kids](https://www.instagram.com/l2r2play.kids/)): "Instagram-a yaz" basılanda ideya mətni
+kopyalanır və profilin DM-i açılır (`ig.me/m/…`). Instagram linkə hazır mətn qoymağa icazə vermir, ona görə ziyarətçi mətni yapışdırıb göndərir.
+Profil `INSTAGRAM_USER`-dədir; boş qoyulsa düymə gizlənir. Hər iki kanal loglarda `idea_sent` hadisəsi kimi görünür (detalda kanal adı).
+
 ## Tarixçə
 `alfa_be` və `jumping-friends` əvvəllər ayrı repolar idi; `git subtree` ilə bütün commit tarixçəsi ilə birləşdirilib.

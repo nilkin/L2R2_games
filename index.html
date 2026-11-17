@@ -18,6 +18,7 @@
   const WHATSAPP_NUMBER = "994104144212";         // məs: "994501234567"
   const FORM_ENDPOINT = "";            // məs: "https://formspree.io/f/abcdwxyz"
   const GITHUB_REPO   = "nilkin/L2R2_games";
+  const INSTAGRAM_USER = "l2r2play.kids";   // "Instagram-a yaz" düyməsi bu profilin DM-ini açır (boşdursa düymə gizlənir)
 </script>
 <style>
   :root{
@@ -176,6 +177,11 @@
   .send:disabled{opacity:.6;cursor:wait}
   .send.wa{background:#25d366;box-shadow:0 6px 0 #1a9e4b}
   .send.wa:active{box-shadow:0 2px 0 #1a9e4b}
+  .send-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:560px){.send-row{grid-template-columns:1fr}}
+  @media (min-width:561px){.send-row .send{font-size:19px;padding:12px 8px;white-space:nowrap}}
+  .send.ig{background:linear-gradient(45deg,#f9a73e 0%,#e1306c 50%,#833ab4 100%);box-shadow:0 6px 0 #8a2b6e}
+  .send.ig:active{box-shadow:0 2px 0 #8a2b6e}
   .hp{position:absolute;left:-9999px}
   .msg{border-radius:14px;padding:12px 14px;font-weight:700;display:none}
   .msg.ok{display:block;background:#d9f7e6;color:#16663a}
@@ -431,7 +437,10 @@
         <input name="contact" maxlength="120" autocomplete="email">
       </label>
       <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="send" type="submit" data-t="send">Göndər 🚀</button>
+      <div class="send-row">
+        <button class="send" type="submit" data-t="send">Göndər 🚀</button>
+        <button class="send ig" type="button" id="igSend" data-t="sendIg">📸 Instagram-a yaz</button>
+      </div>
       <div class="msg" id="msg" role="status"></div>
     </form>
   </div></section>
@@ -439,7 +448,7 @@
   <footer>
     <div class="pals" aria-hidden="true">🐸🐰🐧🦗</div>
     <p data-t="footer">Uşaqlar üçün brauzer oyunları.</p>
-    <p>© <span id="yr"></span> L2R2 · <a href="https://github.com/nilkin">GitHub</a></p>
+    <p>© <span id="yr"></span> L2R2 · <a href="https://www.instagram.com/l2r2play.kids/" target="_blank" rel="noopener">📸 Instagram</a> · <a href="https://github.com/nilkin">GitHub</a></p>
   </footer>
 </div>
 
@@ -456,7 +465,7 @@ const T = {
     fIdea:"Oyun ideyası *",fIdeaPh:"Məs: Pişik ulduzları toplayır və hər ulduzda bir rəqəm öyrənir...",
     chip1:"🔢 Rəqəmlər",chip2:"🎨 Rənglər",chip3:"🐾 Heyvanlar",chip4:"🚀 Kosmos",chip5:"🧩 Tapmaca",
     fAge:"Uşağın yaşı",fName:"Adınız",fContact:"Əlaqə",fContactHint:"E-poçt və ya telefon — oyun hazır olanda xəbər verək (istəyə bağlı)",
-    send:"Göndər 🚀",sendWa:"💬 WhatsApp-a göndər",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
+    send:"Göndər 🚀",sendWa:"💬 WhatsApp-a göndər",sendIg:"📸 Instagram-a yaz",igOk:"Mətn kopyalandı ✅ Instagram açıldı — mesaj qutusunda barmağınızı saxlayıb «Yapışdır» seçin və göndərin 📲",igNoCopy:"Instagram açıldı — ideyanızı mesajda yazıb göndərin 📲",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
     empty:"Zəhmət olmasa ideyanı yazın ✏️",gh:"İdeyanı tamamlamaq üçün GitHub səhifəsi açıldı.",footer:"Uşaqlar üçün brauzer oyunları."},
   ru:{brand:"Игры",ctaPlay:"🎮 К играм",ctaIdea:"💡 Предложить идею",dev1:"📱 Телефон",dev4:"Планшет",dev2:"💻 Компьютер",dev3:"📺 ТВ",heroTitle:'Весёлые <span>игры для детей</span>',heroSub:"Ничего не нужно скачивать — играйте в браузере на телефоне, планшете, компьютере и ТВ.",
     gamesTitle:"🎮 Наши игры",play:"▶ Играть",
@@ -469,7 +478,7 @@ const T = {
     fIdea:"Идея игры *",fIdeaPh:"Напр.: котёнок собирает звёзды и с каждой звездой учит новую цифру...",
     chip1:"🔢 Цифры",chip2:"🎨 Цвета",chip3:"🐾 Животные",chip4:"🚀 Космос",chip5:"🧩 Головоломка",
     fAge:"Возраст ребёнка",fName:"Ваше имя",fContact:"Контакт",fContactHint:"E-mail или телефон — сообщим, когда игра будет готова (необязательно)",
-    send:"Отправить 🚀",sendWa:"💬 Отправить в WhatsApp",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
+    send:"Отправить 🚀",sendWa:"💬 Отправить в WhatsApp",sendIg:"📸 Написать в Instagram",igOk:"Текст скопирован ✅ Instagram открыт — зажмите поле сообщения, выберите «Вставить» и отправьте 📲",igNoCopy:"Instagram открыт — напишите идею в сообщении и отправьте 📲",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
     empty:"Пожалуйста, опишите идею ✏️",gh:"Открыта страница GitHub, чтобы завершить отправку.",footer:"Браузерные игры для детей."},
   en:{brand:"Games",ctaPlay:"🎮 See the games",ctaIdea:"💡 Send an idea",dev1:"📱 Phone",dev4:"Tablet",dev2:"💻 Computer",dev3:"📺 TV",heroTitle:'Fun <span>games for kids</span>',heroSub:"Nothing to install — play in the browser on phone, tablet, computer or TV.",
     gamesTitle:"🎮 Our games",play:"▶ Play",
@@ -482,7 +491,7 @@ const T = {
     fIdea:"Game idea *",fIdeaPh:"E.g.: a kitten collects stars and learns a new number with each one...",
     chip1:"🔢 Numbers",chip2:"🎨 Colors",chip3:"🐾 Animals",chip4:"🚀 Space",chip5:"🧩 Puzzle",
     fAge:"Child's age",fName:"Your name",fContact:"Contact",fContactHint:"Email or phone — so we can tell you when it's ready (optional)",
-    send:"Send 🚀",sendWa:"💬 Send via WhatsApp",sending:"Sending...",ok:"Thank you! We got your idea 🎉",err:"Couldn't send. Please try again a bit later.",
+    send:"Send 🚀",sendWa:"💬 Send via WhatsApp",sendIg:"📸 Message on Instagram",igOk:"Text copied ✅ Instagram opened — long-press the message box, tap Paste and send 📲",igNoCopy:"Instagram opened — type your idea in the message and send 📲",sending:"Sending...",ok:"Thank you! We got your idea 🎉",err:"Couldn't send. Please try again a bit later.",
     empty:"Please describe your idea ✏️",gh:"A GitHub page opened to finish sending your idea.",footer:"Browser games for kids."}
 };
 let lang = "az";
@@ -492,6 +501,7 @@ function applyLang(l){
   document.querySelectorAll("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(v!=null) el.innerHTML=v; });
   document.querySelectorAll("[data-tp]").forEach(el=>{ el.placeholder=T[l][el.dataset.tp]; });
   if(WHATSAPP_NUMBER){ const s=document.querySelector(".send"); s.classList.add("wa"); s.innerHTML=T[l].sendWa; }
+  if(!INSTAGRAM_USER){ document.getElementById("igSend").style.display="none"; document.querySelector(".send-row").style.gridTemplateColumns="1fr"; }
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===l));
   try{ localStorage.setItem("l2r2-lang",l); }catch(e){}
 }
@@ -508,16 +518,17 @@ document.querySelectorAll(".chips button").forEach(b=>b.onclick=()=>{
 
 const form = document.getElementById("ideaForm"), msg = document.getElementById("msg");
 function show(cls,text){ msg.className="msg "+cls; msg.textContent=text; }
+const ideaText = d => `💡 Yeni oyun ideyası\n\n${d.idea.trim()}\n\n👶 Yaş: ${d.age||"-"}\n🙂 Ad: ${d.name||"-"}\n📞 Əlaqə: ${d.contact||"-"}\n🌐 Dil: ${lang}`;
 form.addEventListener("submit", async e=>{
   e.preventDefault();
   const d = Object.fromEntries(new FormData(form));
   if(d._gotcha) return;
   if(!d.idea.trim()){ show("err",T[lang].empty); ta.focus(); return; }
   const btn = form.querySelector(".send");
-  window.L2R2Log&&L2R2Log.event("idea_sent", d.age ? "Yaş: "+d.age : "");
+  window.L2R2Log&&L2R2Log.event("idea_sent", (WHATSAPP_NUMBER?"WhatsApp":FORM_ENDPOINT?"Form":"GitHub") + (d.age ? ", yaş: "+d.age : ""));
 
   if(WHATSAPP_NUMBER){
-    const text = `💡 Yeni oyun ideyası\n\n${d.idea.trim()}\n\n👶 Yaş: ${d.age||"-"}\n🙂 Ad: ${d.name||"-"}\n📞 Əlaqə: ${d.contact||"-"}\n🌐 Dil: ${lang}`;
+    const text = ideaText(d);
     window.open(`https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g,"")}?text=${encodeURIComponent(text)}`,"_blank","noopener");
     show("ok",{az:"WhatsApp açıldı — mesajı göndərməyi unutmayın 📲",ru:"Открылся WhatsApp — не забудьте отправить сообщение 📲",en:"WhatsApp opened — don't forget to tap send 📲"}[lang]);
     return;
@@ -538,6 +549,22 @@ form.addEventListener("submit", async e=>{
     form.reset(); show("ok",T[lang].ok);
   }catch(err){ show("err",T[lang].err); }
   finally{ btn.disabled=false; btn.textContent=T[lang].send; }
+});
+
+// Instagram: DM-ə hazır mətn ötürmək mümkün deyil, ona görə mətni kopyalayıb DM-i açırıq
+function copyText(t){
+  try{ if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(t); return true; } }catch(e){}
+  try{ const x=document.createElement("textarea"); x.value=t; x.setAttribute("readonly",""); x.style.position="fixed"; x.style.opacity="0";
+       document.body.appendChild(x); x.select(); x.setSelectionRange(0,t.length); const ok=document.execCommand("copy"); x.remove(); return ok; }catch(e){ return false; }
+}
+document.getElementById("igSend").addEventListener("click", ()=>{
+  const d = Object.fromEntries(new FormData(form));
+  if(d._gotcha) return;
+  if(!d.idea.trim()){ show("err",T[lang].empty); ta.focus(); return; }
+  const copied = copyText(ideaText(d));
+  window.open("https://ig.me/m/"+INSTAGRAM_USER, "_blank", "noopener");
+  show("ok", copied ? T[lang].igOk : T[lang].igNoCopy);
+  window.L2R2Log&&L2R2Log.event("idea_sent", "Instagram" + (d.age ? ", yaş: "+d.age : ""));
 });
 </script>
 </body>
