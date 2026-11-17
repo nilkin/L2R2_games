@@ -9,6 +9,7 @@ Uşaqlar üçün brauzer oyunları — hamısı bir yerdə.
 | Hərf Oyunu 🎈 | [`alfa_be/`](alfa_be/) | https://nilkin.github.io/L2R2_games/alfa_be/ |
 | Atlayan Dostlar 🦗🐸🐰🐧 | [`jumping-friends/`](jumping-friends/) | https://nilkin.github.io/L2R2_games/jumping-friends/ |
 | Zuzu və Rəqəmlər 🔢 | [`reqemler/`](reqemler/) | https://nilkin.github.io/L2R2_games/reqemler/ |
+| Bubu və Dünya 🦉 | [`dunya/`](dunya/) | https://nilkin.github.io/L2R2_games/dunya/ |
 
 ## Struktur
 ```
