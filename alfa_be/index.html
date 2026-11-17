@@ -7,6 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Hərf Oyunu — Azərbaycan əlifbası</title>
+<script src="../log.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg1:#fff6e0;--bg2:#ffe3ec;--ink:#3b2a4a;--card:#fff;--ok:#2ecc71;--bad:#ff5e57}
@@ -514,6 +515,7 @@ function renderPreview(){
 function startGame(kid){
   if(!S.sel.length){toast('Əvvəlcə “Valideyn bölməsi”ndən hərfləri seçin.');return}
   S.kid=kid;store.set('kid',kid);
+  window.L2R2Log&&L2R2Log.event('play_start','Hərflər: '+S.sel.length);
   avatar.innerHTML=kidSVG(kid);setMood('idle');
   show('gameScreen');
   $('stars').textContent=S.stars;
@@ -645,6 +647,7 @@ function check(){
   if(ok){
     S.lock=true;
     const isNew = !c && !S.found.has(word);
+    if(window.L2R2Log){L2R2Log.count('düz');if(c)L2R2Log.event('level_complete',(S.mode==='heca'?'Heca: ':'Söz: ')+word);else if(isNew)L2R2Log.event('level_complete','Sərbəst: '+word)}
     if(!c){S.found.add(word);store.set('found',Array.from(S.found))}
     if(c || isNew){S.stars++;store.set('stars',S.stars);$('stars').textContent=S.stars}
     $('pic').textContent=pic;$('pic').classList.remove('bounce');void $('pic').offsetWidth;$('pic').classList.add('bounce');
@@ -662,7 +665,7 @@ function check(){
       else{S.built=[];S.lock=false;renderSlots();renderFound();$('progress').textContent='Tapdığın sözlər: '+S.found.size}
     },2000);
   }else{
-    sfx.bad();setMood('sad');avatar.classList.add('sad');
+    sfx.bad();setMood('sad');avatar.classList.add('sad');window.L2R2Log&&L2R2Log.count('səhv');
     const el=$('slots');el.classList.add('shake');
     talk(c?rnd(TRY):`“${word}” — belə söz tanımıram. ${rnd(TRY)}`);
     S.lock=true;

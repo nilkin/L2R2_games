@@ -16,6 +16,8 @@ index.html          ← mərkəzi səhifə (oyun kartları + ideya forması)
 alfa_be/            ← hər oyun öz qovluğunda, öz index.html-i ilə
 jumping-friends/
 reqemler/
+log.js              ← statistika: kim, haradan, hansı cihaz, hansı oyun, oynadı/baxıb çıxdı
+logserver/          ← server (Google Apps Script → Google Sheets) və quraşdırma: logserver/README.md
 ```
 
 ## Yeni oyun əlavə etmək
@@ -23,6 +25,7 @@ reqemler/
    Fayllara nisbi yolla müraciət et (`audio/x.mp3`, `/audio/x.mp3` yox).
 2. Kökdəki `index.html`-də `.games` blokunda mövcud kartı (`<a class="game" ...>`) kopyala,
    `href="yeni-oyun/"` et, şəkli və mətni dəyiş. Mətnlər üçün `T.az / T.ru / T.en`-ə açar əlavə et.
+   Statistika üçün oyunun `<head>`-inə `<script src="../log.js"></script>` əlavə et (bax [logserver/README.md](logserver/README.md)).
 3. Bu cədvələ sətir əlavə et, commit + push — bir neçə dəqiqəyə saytda olur.
 
 ## İdeya forması

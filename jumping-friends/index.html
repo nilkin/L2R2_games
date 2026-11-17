@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Atlayan Dostlar</title>
+<script src="../log.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #14122b; }
@@ -3023,6 +3024,7 @@ function updateBoss(dt) {
   });
 }
 function startWin() {
+  window.L2R2Log && L2R2Log.event('level_complete', 'Mərhələ ' + (season + 1) + ' boss məğlub');
   phase = 'win';
   winT = 0;
   boss.happy = true;
@@ -3686,6 +3688,7 @@ function goToStage(idx, a, b2) {
   stageStars = 0;
 }
 function stageFail() {
+  window.L2R2Log && L2R2Log.count('can bitdi');
   lives = 3;
   hitHalf = false;
   var target = Math.max(0, season - 1);
@@ -3727,6 +3730,7 @@ function getHit() {
   if (lives <= 0) setTimeout(stageFail, 700);
 }
 function startFinale() {
+  window.L2R2Log && L2R2Log.event('game_complete', 'Oyunu sona çatdırdı');
   phase = 'finale';
   finT = 0;
   hop.dizzy = 0;
@@ -3978,6 +3982,7 @@ function jumpPress() {
   if (state === 'menu') {
     state = 'play';
     reset();
+    window.L2R2Log && L2R2Log.event('play_start', 'Mərhələ ' + (START_STAGE + 1));
     if (START_STAGE) {
       gifts = BOSSES.slice(0, START_STAGE).map(function (b) {
         return b.gift;

@@ -32,6 +32,6 @@ try {
 
 const banner = '<!-- AVTOMATİK YARADILIB: redaktə etməyin. Mənbə: src/index.html, build: npm run build -->\n';
 const out = html.replace(m[0], () => '<script>\n' + code + '\n</script>')
-  .replace(/^<!DOCTYPE html>\n/i, (d) => d + banner);
+  .replace(/^<!DOCTYPE html>\r?\n/i, (d) => d + banner);
 fs.writeFileSync(OUT, out);
 console.log(`index.html hazırdır (${(out.length / 1024).toFixed(1)} KB, ES5)`);

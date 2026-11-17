@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>L2R2 Oyunlar</title>
+<script src="log.js"></script>
 <meta name="description" content="Uşaqlar üçün brauzer oyunları. Oyun ideyanızı göndərin, biz onu sizin üçün hazırlayaq!">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
@@ -514,6 +515,7 @@ form.addEventListener("submit", async e=>{
   if(d._gotcha) return;
   if(!d.idea.trim()){ show("err",T[lang].empty); ta.focus(); return; }
   const btn = form.querySelector(".send");
+  window.L2R2Log&&L2R2Log.event("idea_sent", d.age ? "Yaş: "+d.age : "");
 
   if(WHATSAPP_NUMBER){
     const text = `💡 Yeni oyun ideyası\n\n${d.idea.trim()}\n\n👶 Yaş: ${d.age||"-"}\n🙂 Ad: ${d.name||"-"}\n📞 Əlaqə: ${d.contact||"-"}\n🌐 Dil: ${lang}`;

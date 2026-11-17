@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Atlayan Dostlar</title>
+<script src="../log.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #14122b; }
@@ -1358,6 +1359,7 @@ function updateBoss(dt) {
   projectiles = projectiles.filter(p => p.x > -60 && p.y < H + 60);
 }
 function startWin() {
+  window.L2R2Log&&L2R2Log.event('level_complete', 'Mərhələ ' + (season + 1) + ' boss məğlub');
   phase = 'win'; winT = 0; boss.happy = true; boss.hurt = 0;
   seasonMsg = 2.4; bannerA = T('win')[0]; bannerB = T('win')[1];
   [523, 659, 784, 1047, 784, 1047, 1319].forEach((n, i) => setTimeout(() => beep(n, 0.22, 'triangle', 0.08), i * 140));
@@ -1662,6 +1664,7 @@ function goToStage(idx, a, b2) {
   phase = 'run'; boss = null; projectiles = []; gift = null; fans = []; mounds = []; stars = []; nextFan = 500; stageStars = 0;
 }
 function stageFail() {
+  window.L2R2Log&&L2R2Log.count('can bitdi');
   lives = 3; hitHalf = false;
   const target = Math.max(0, season - 1);
   // gifts[i] = i-ci mərhələnin hədiyyəsi; geri qayıdılan mərhələnin hədiyyəsi silinir, boss yenidən udulanda təkrar verilir
@@ -1680,6 +1683,7 @@ function getHit() {
   if (lives <= 0) setTimeout(stageFail, 700);
 }
 function startFinale() {
+  window.L2R2Log&&L2R2Log.event('game_complete', 'Oyunu sona çatdırdı');
   phase = 'finale'; finT = 0; hop.dizzy = 0;
   seasonMsg = 5; bannerA = T('congrats'); bannerB = T('finished');
   const n = 8, x0 = hop.x + 70, span = Math.max(100, W - 40 - x0);
@@ -1799,6 +1803,7 @@ const START_STAGE = (() => {
 function jumpPress() {
   if (state === 'menu') {
     state = 'play'; reset();
+    window.L2R2Log&&L2R2Log.event('play_start', 'Mərhələ ' + (START_STAGE + 1));
     if (START_STAGE) {
       gifts = BOSSES.slice(0, START_STAGE).map(b => b.gift);
       goToStage(START_STAGE, T('stages')[START_STAGE][0], T('stages')[START_STAGE][1]);

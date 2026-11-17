@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Zuzu və Rəqəmlər</title>
+<script src="../log.js"></script>
 <meta name="description" content="Uşaqlar üçün rəqəm oyunu: saymaq, müqayisə, toplama və çıxma.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
@@ -1016,6 +1017,7 @@ function renderDots(){$('dots').innerHTML=range(0,ROUNDS-1).map(i=>`<i class="${
 function startStage(i){
   if(dragCancel)dragCancel();
   S.si=i;S.round=0;S.mist=0;S.plan=makePlan(STAGES[i]);
+  window.L2R2Log&&L2R2Log.event('play_start','Mərhələ '+(i+1)+' ('+STAGES[i].id+')');
   closeOverlays();show('play');startRound();
 }
 function startRound(){
@@ -1029,7 +1031,7 @@ function startRound(){
 }
 function nextRound(){S.round++;if(S.round>=ROUNDS)finishStage();else startRound()}
 function win(lines,extra=0,txt=''){
-  S.lock=true;const tok=S.tok;
+  S.lock=true;const tok=S.tok;window.L2R2Log&&L2R2Log.count('düz');
   sfx.win();S.base='happy';mood('happy');danceZ();confetti(70);
   const pi=Math.floor(Math.random()*PH().praise.length),pr=PH().praise[pi];setBubble(txt?txt+' '+pr:pr);
   const sp=speak([].concat(lines||[],'praise_'+pi));
@@ -1037,7 +1039,7 @@ function win(lines,extra=0,txt=''){
 }
 const TRY={};   /* placeholder inside oops() lines: "try again" phrase */
 function oops(el,lines){
-  S.mist++;S.cool=Date.now()+650;
+  S.mist++;S.cool=Date.now()+650;window.L2R2Log&&L2R2Log.count('səhv');
   sfx.boing();mood('oh',900);shakeEl(el);
   const ti=Math.floor(Math.random()*PH().tryA.length),t='try_'+ti;setBubble(PH().tryA[ti]);
   speak(lines&&lines.length?lines.map(x=>x===TRY?t:x):[t]);
@@ -1045,6 +1047,7 @@ function oops(el,lines){
 function finishStage(){
   S.tok++;S.lock=true;renderDots();
   const stars=S.mist===0?3:S.mist<=2?2:1,id=STAGES[S.si].id;
+  window.L2R2Log&&L2R2Log.event('level_complete','Mərhələ '+(S.si+1)+' ('+id+'): '+stars+'⭐, '+S.mist+' səhv');
   if((prog.st[id]||0)<stars){prog.st[id]=stars;saveProg()}
   const sp=[...$('wst').children];sp.forEach(s=>s.classList.remove('on'));
   $('wZ').innerHTML=zuzu('happy');
