@@ -85,6 +85,9 @@
   .devices{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
   @media (max-width:820px){.devices{justify-content:center}}
   .devices span{background:var(--glass);border-radius:99px;padding:2px 12px;font-weight:700;font-size:15px}
+  .devices .dv{display:inline-flex;align-items:center;gap:5px}
+  .devices .dv i{font-style:normal}
+  .devices .ico{width:1.35em;height:1em;flex:none}
 
   .scene{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 30px rgba(60,30,90,.18))}
   .scene .sun{transform-box:fill-box;transform-origin:center;animation:spin 24s linear infinite}
@@ -206,7 +209,7 @@
         <a class="btn p" href="#games" data-t="ctaPlay">🎮 Oyunlara bax</a>
         <a class="btn s" href="#idea" data-t="ctaIdea">💡 İdeya göndər</a>
       </div>
-      <div class="devices"><span data-t="dev1">📱 Telefon</span><span data-t="dev2">💻 Kompüter</span><span data-t="dev3">📺 TV</span><span>🌐 AZ · RU · EN</span></div>
+      <div class="devices"><span data-t="dev1">📱 Telefon</span><span class="dv"><svg class="ico" viewBox="0 0 24 18" aria-hidden="true"><rect x=".8" y=".8" width="22.4" height="16.4" rx="3" fill="#4a4f66"/><rect x="3.6" y="2.8" width="16.8" height="12.4" rx="1.2" fill="#24294a"/><rect x="5.2" y="4.6" width="2.6" height="2.6" rx=".7" fill="#ff5d8f"/><rect x="8.8" y="4.6" width="2.6" height="2.6" rx=".7" fill="#ffa62b"/><rect x="12.4" y="4.6" width="2.6" height="2.6" rx=".7" fill="#3ddc84"/><rect x="16.0" y="4.6" width="2.6" height="2.6" rx=".7" fill="#4cc9f0"/><rect x="5.2" y="8.8" width="2.6" height="2.6" rx=".7" fill="#7c5cff"/><rect x="8.8" y="8.8" width="2.6" height="2.6" rx=".7" fill="#ffd43b"/><rect x="12.4" y="8.8" width="2.6" height="2.6" rx=".7" fill="#4cc9f0"/><rect x="16.0" y="8.8" width="2.6" height="2.6" rx=".7" fill="#ff5d8f"/><circle cx="2.2" cy="9" r=".7" fill="#8a90ad"/></svg><i data-t="dev4">Planşet</i></span><span data-t="dev2">💻 Kompüter</span><span data-t="dev3">📺 TV</span><span>🌐 AZ · RU · EN</span></div>
     </div>
     <svg class="scene" viewBox="0 0 600 380" aria-hidden="true">
       <defs>
@@ -442,7 +445,7 @@
 
 <script>
 const T = {
-  az:{brand:"Oyunlar",ctaPlay:"🎮 Oyunlara bax",ctaIdea:"💡 İdeya göndər",dev1:"📱 Telefon",dev2:"💻 Kompüter",dev3:"📺 TV",heroTitle:'Uşaqlar üçün <span>şən oyunlar</span>',heroSub:"Yükləmək lazım deyil — telefonda, planşetdə, kompüterdə və TV-də brauzerdə oyna.",
+  az:{brand:"Oyunlar",ctaPlay:"🎮 Oyunlara bax",ctaIdea:"💡 İdeya göndər",dev1:"📱 Telefon",dev4:"Planşet",dev2:"💻 Kompüter",dev3:"📺 TV",heroTitle:'Uşaqlar üçün <span>şən oyunlar</span>',heroSub:"Yükləmək lazım deyil — telefonda, planşetdə, kompüterdə və TV-də brauzerdə oyna.",
     gamesTitle:"🎮 Oyunlarımız",play:"▶ Oyna",
     g1Title:"Hərf Oyunu 🎈",g1Desc:"Azərbaycan əlifbasını oynaya-oynaya öyrən: hərfləri tanı, səslərini eşit, ulduz topla.",g1Tag1:"Əlifba",g1Tag2:"Səsli",
     g2Title:"Atlayan Dostlar 🦗🐸🐰🐧",g2Desc:"9 mərhələli macəra: fəsillərdən planetlərə qədər atla, final boss-ları məğlub et, Günəşdə Alov Əjdahası ilə döyüş!",g2Tag1:"Macəra",g2Tag2:"3 dil",
@@ -455,7 +458,7 @@ const T = {
     fAge:"Uşağın yaşı",fName:"Adınız",fContact:"Əlaqə",fContactHint:"E-poçt və ya telefon — oyun hazır olanda xəbər verək (istəyə bağlı)",
     send:"Göndər 🚀",sendWa:"💬 WhatsApp-a göndər",sending:"Göndərilir...",ok:"Təşəkkür edirik! İdeyanız bizə çatdı 🎉",err:"Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
     empty:"Zəhmət olmasa ideyanı yazın ✏️",gh:"İdeyanı tamamlamaq üçün GitHub səhifəsi açıldı.",footer:"Uşaqlar üçün brauzer oyunları."},
-  ru:{brand:"Игры",ctaPlay:"🎮 К играм",ctaIdea:"💡 Предложить идею",dev1:"📱 Телефон",dev2:"💻 Компьютер",dev3:"📺 ТВ",heroTitle:'Весёлые <span>игры для детей</span>',heroSub:"Ничего не нужно скачивать — играйте в браузере на телефоне, планшете, компьютере и ТВ.",
+  ru:{brand:"Игры",ctaPlay:"🎮 К играм",ctaIdea:"💡 Предложить идею",dev1:"📱 Телефон",dev4:"Планшет",dev2:"💻 Компьютер",dev3:"📺 ТВ",heroTitle:'Весёлые <span>игры для детей</span>',heroSub:"Ничего не нужно скачивать — играйте в браузере на телефоне, планшете, компьютере и ТВ.",
     gamesTitle:"🎮 Наши игры",play:"▶ Играть",
     g1Title:"Игра с буквами 🎈",g1Desc:"Учим азербайджанский алфавит играя: узнавай буквы, слушай их звуки, собирай звёзды.",g1Tag1:"Алфавит",g1Tag2:"Со звуком",
     g2Title:"Прыгающие друзья 🦗🐸🐰🐧",g2Desc:"Приключение из 9 уровней: от времён года до планет, финальные боссы и битва с Огненным Драконом на Солнце!",g2Tag1:"Приключение",g2Tag2:"3 языка",
@@ -468,7 +471,7 @@ const T = {
     fAge:"Возраст ребёнка",fName:"Ваше имя",fContact:"Контакт",fContactHint:"E-mail или телефон — сообщим, когда игра будет готова (необязательно)",
     send:"Отправить 🚀",sendWa:"💬 Отправить в WhatsApp",sending:"Отправляем...",ok:"Спасибо! Ваша идея получена 🎉",err:"Не удалось отправить. Попробуйте чуть позже.",
     empty:"Пожалуйста, опишите идею ✏️",gh:"Открыта страница GitHub, чтобы завершить отправку.",footer:"Браузерные игры для детей."},
-  en:{brand:"Games",ctaPlay:"🎮 See the games",ctaIdea:"💡 Send an idea",dev1:"📱 Phone",dev2:"💻 Computer",dev3:"📺 TV",heroTitle:'Fun <span>games for kids</span>',heroSub:"Nothing to install — play in the browser on phone, tablet, computer or TV.",
+  en:{brand:"Games",ctaPlay:"🎮 See the games",ctaIdea:"💡 Send an idea",dev1:"📱 Phone",dev4:"Tablet",dev2:"💻 Computer",dev3:"📺 TV",heroTitle:'Fun <span>games for kids</span>',heroSub:"Nothing to install — play in the browser on phone, tablet, computer or TV.",
     gamesTitle:"🎮 Our games",play:"▶ Play",
     g1Title:"Letter Game 🎈",g1Desc:"Learn the Azerbaijani alphabet through play: spot letters, hear their sounds, collect stars.",g1Tag1:"Alphabet",g1Tag2:"With audio",
     g2Title:"Jumping Friends 🦗🐸🐰🐧",g2Desc:"A 9-level adventure from the seasons to the planets, with boss fights and a Fire Dragon battle on the Sun!",g2Tag1:"Adventure",g2Tag2:"3 languages",
